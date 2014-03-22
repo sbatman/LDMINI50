@@ -7,13 +7,13 @@
         {
 
             
-
+            this.load.image('graphics-character-placeholder', 'Content/Graphics/Character/PlaceHolder.png');
         }
 
         create()
         {
 
-          //  this.game.state.start('Preloader', true, false);
+            this.game.state.start('Level', true, false);
 
         }
 
