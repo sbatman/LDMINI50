@@ -24,6 +24,9 @@
         //switch to the main menu state at this point.
         startMainMenu()
         {
+            //dispose of the preload bar
+            this.preloadBar = null;
+
             this.game.state.start('MainMenu', true, false);
         }
     }
