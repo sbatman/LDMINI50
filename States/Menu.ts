@@ -16,7 +16,7 @@
         create()
         {
             //play title music.
-            this.titleMusic = this.add.audio('content-audio-music-titleScreenMusic', 1, true);
+            this.titleMusic = this.add.audio('content-audio-music-titleScreenMusic', 0.05, true);
             this.titleMusic.play();
 
             this.background = this.add.sprite(0, 0, 'content-graphics-menu-titleScreen');
