@@ -37,6 +37,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Graphics\Menu\loadingBar.jpg" />
+    <Content Include="Content\Graphics\Menu\titleScreen.jpg" />
     <Content Include="index.html" />
     <Content Include="Libs\Phaser\phaser.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

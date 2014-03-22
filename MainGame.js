@@ -26,6 +26,23 @@ var MINILD50;
 })(MINILD50 || (MINILD50 = {}));
 var MINILD50;
 (function (MINILD50) {
+    var BootState = (function (_super) {
+        __extends(BootState, _super);
+        function BootState() {
+            _super.apply(this, arguments);
+        }
+        BootState.prototype.preload = function () {
+        };
+
+        BootState.prototype.create = function () {
+            //  this.game.state.start('Preloader', true, false);
+        };
+        return BootState;
+    })(Phaser.State);
+    MINILD50.BootState = BootState;
+})(MINILD50 || (MINILD50 = {}));
+var MINILD50;
+(function (MINILD50) {
     var MenuState = (function (_super) {
         __extends(MenuState, _super);
         function MenuState() {
@@ -34,12 +51,46 @@ var MINILD50;
         MenuState.prototype.preload = function () {
             //Load audio in.
             this.load.audio('content-audio-music-titleScreenMusic', 'Content/Audio/Music/titleScreenMusic.mp3');
+
+            //load graphics in.
+            this.load.image('titleScreen', 'Content/Graphics/Menu/titleScreen.jpg');
         };
 
         MenuState.prototype.create = function () {
             //play title music.
             this.titleMusic = this.add.audio('content-audio-music-titleScreenMusic', 1, true);
             this.titleMusic.play();
+
+            this.background = this.add.sprite(0, 0, 'titleScreen');
+            this.background.alpha = 0;
+
+            this.prompt = this.game.add.text((this.camera.width / 2) - 100, this.camera.height / 2, "Press Enter to Start", { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
+
+            //add animations
+            this.add.tween(this.background).to({ alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
+
+            //this.add.tween(this.prompt).to({ alpha: 1 }, 2000, Phaser.Easing.Bounce.InOut, true);
+            //put event handler on user input to load the game fully when the user clicks a button.
+            this.input.onDown.addOnce(this.fadeOut, this);
+        };
+
+        //when user provides input, fade the menu screen out and load the first level.
+        MenuState.prototype.fadeOut = function () {
+            //delete text prompt
+            this.prompt = null;
+
+            var tween = this.add.tween(this.background).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+            tween.onComplete.add(this.startGame, this);
+        };
+
+        //load the first level - atm we dont have one so just loop back to the loading bar state.
+        MenuState.prototype.startGame = function () {
+            this.game.state.start('Preloader', true, false);
+
+            //stop music and delete assets
+            this.titleMusic.stop();
+            this.titleMusic = null;
+            this.background = null;
         };
         return MenuState;
     })(Phaser.State);
@@ -72,22 +123,5 @@ var MINILD50;
         return PreloaderState;
     })(Phaser.State);
     MINILD50.PreloaderState = PreloaderState;
-})(MINILD50 || (MINILD50 = {}));
-var MINILD50;
-(function (MINILD50) {
-    var BootState = (function (_super) {
-        __extends(BootState, _super);
-        function BootState() {
-            _super.apply(this, arguments);
-        }
-        BootState.prototype.preload = function () {
-        };
-
-        BootState.prototype.create = function () {
-            //  this.game.state.start('Preloader', true, false);
-        };
-        return BootState;
-    })(Phaser.State);
-    MINILD50.BootState = BootState;
 })(MINILD50 || (MINILD50 = {}));
 //# sourceMappingURL=MainGame.js.map
