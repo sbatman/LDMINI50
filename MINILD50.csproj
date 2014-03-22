@@ -63,7 +63,6 @@
     <TypeScriptCompile Include="States\Boot.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Libs\Phaser\phaser.map" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
