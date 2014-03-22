@@ -51,15 +51,18 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app.ts" />
+    <TypeScriptCompile Include="GameClasses\Player.ts" />
     <TypeScriptCompile Include="MainGame.ts" />
     <TypeScriptCompile Include="Libs\Phaser\phaser.d.ts">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </TypeScriptCompile>
     <TypeScriptCompile Include="States\Menu.ts" />
+    <TypeScriptCompile Include="States\Level.ts" />
     <TypeScriptCompile Include="States\Preloader.ts" />
     <TypeScriptCompile Include="States\Boot.ts" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Libs\Phaser\phaser.map" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
