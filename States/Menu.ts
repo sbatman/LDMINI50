@@ -49,7 +49,7 @@
         //load the first level - atm we dont have one so just loop back to the loading bar state.
         startGame()
         {
-            this.game.state.start('Preloader', true, false);
+            this.game.state.start('Level', true, false);
 
             //stop music and delete assets
             this.titleMusic.stop();

@@ -13,7 +13,7 @@
             this.state.add('MainMenu', MenuState, false);
             this.state.add('Level', LevelState, false);
 
-            this.state.start('Preloader');
+            this.state.start('Boot');
         }
     }
 }

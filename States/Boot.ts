@@ -13,7 +13,7 @@
         create()
         {
 
-          //  this.game.state.start('Preloader', true, false);
+          this.game.state.start('Preloader', true, false);
 
         }
 
