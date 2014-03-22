@@ -6,7 +6,7 @@
         constructor()
         {
 
-            super(screen.availWidth, screen.availHeight - 100, Phaser.AUTO, 'content', null);
+            super(window.innerWidth, window.innerHeight, Phaser.AUTO, 'content', null);
          
             this.state.add('Boot', BootState, false);
             this.state.add('Preloader', PreloaderState, false);

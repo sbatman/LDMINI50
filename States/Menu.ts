@@ -21,10 +21,10 @@
 
             this.background = this.add.sprite(0, 0, 'content-graphics-menu-titleScreen');
             this.background.alpha = 0;
-            this.background.width = screen.availWidth;
-            this.background.height = screen.availHeight - 100
+            this.background.width = window.innerWidth;
+            this.background.height = window.innerHeight;
 
-            this.prompt = this.game.add.text((this.camera.width / 2) - 100, this.camera.height / 2, "Press Enter to Start", { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
+            this.prompt = this.game.add.text((this.camera.width / 2) - 90, this.camera.height / 2, "Click to Start", { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
             this.prompt.alpha = 0;
 
             //add animations

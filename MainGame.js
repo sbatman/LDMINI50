@@ -9,6 +9,20 @@ var __extends = this.__extends || function (d, b) {
 };
 var MINILD50;
 (function (MINILD50) {
+    var Floor = (function (_super) {
+        __extends(Floor, _super);
+        function Floor(game, x, y) {
+            _super.call(this, game, x, y, 'graphics-Level-BuildingParts-Floor64');
+            this.anchor.setTo(0.5, 0);
+            game.add.existing(this);
+            game.physics.arcade.enable(this);
+        }
+        return Floor;
+    })(Phaser.Sprite);
+    MINILD50.Floor = Floor;
+})(MINILD50 || (MINILD50 = {}));
+var MINILD50;
+(function (MINILD50) {
     var Player = (function (_super) {
         __extends(Player, _super);
         function Player(game, x, y) {
@@ -16,6 +30,7 @@ var MINILD50;
             this.anchor.setTo(0.5, 0);
             game.add.existing(this);
             game.physics.arcade.enable(this);
+            this.body.gravity.y = 6;
         }
         Player.prototype.update = function () {
             this.body.velocity.x = 0;
@@ -40,7 +55,7 @@ var MINILD50;
     var MainGame = (function (_super) {
         __extends(MainGame, _super);
         function MainGame() {
-            _super.call(this, screen.availWidth, screen.availHeight - 100, Phaser.AUTO, 'content', null);
+            _super.call(this, window.innerWidth, window.innerHeight, Phaser.AUTO, 'content', null);
 
             this.state.add('Boot', MINILD50.BootState, false);
             this.state.add('Preloader', MINILD50.PreloaderState, false);
@@ -52,43 +67,6 @@ var MINILD50;
         return MainGame;
     })(Phaser.Game);
     MINILD50.MainGame = MainGame;
-})(MINILD50 || (MINILD50 = {}));
-var MINILD50;
-(function (MINILD50) {
-    var BootState = (function (_super) {
-        __extends(BootState, _super);
-        function BootState() {
-            _super.apply(this, arguments);
-        }
-        BootState.prototype.preload = function () {
-            //load the loading bar BEFORE the main loading phase.
-            this.load.image('content-graphics-menu-loadingBar', 'Content/Graphics/Menu/loadingBar.jpg');
-        };
-
-        BootState.prototype.create = function () {
-            this.game.state.start('Preloader', true, false);
-        };
-        return BootState;
-    })(Phaser.State);
-    MINILD50.BootState = BootState;
-})(MINILD50 || (MINILD50 = {}));
-var MINILD50;
-(function (MINILD50) {
-    var LevelState = (function (_super) {
-        __extends(LevelState, _super);
-        function LevelState() {
-            _super.apply(this, arguments);
-        }
-        LevelState.prototype.preload = function () {
-        };
-
-        LevelState.prototype.create = function () {
-            this.player = new MINILD50.Player(this.game, 130, 284);
-            //  this.game.state.start('Preloader', true, false);
-        };
-        return LevelState;
-    })(Phaser.State);
-    MINILD50.LevelState = LevelState;
 })(MINILD50 || (MINILD50 = {}));
 var MINILD50;
 (function (MINILD50) {
@@ -107,10 +85,10 @@ var MINILD50;
 
             this.background = this.add.sprite(0, 0, 'content-graphics-menu-titleScreen');
             this.background.alpha = 0;
-            this.background.width = screen.availWidth;
-            this.background.height = screen.availHeight - 100;
+            this.background.width = window.innerWidth;
+            this.background.height = window.innerHeight;
 
-            this.prompt = this.game.add.text((this.camera.width / 2) - 100, this.camera.height / 2, "Press Enter to Start", { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
+            this.prompt = this.game.add.text((this.camera.width / 2) - 90, this.camera.height / 2, "Click to Start", { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
             this.prompt.alpha = 0;
 
             //add animations
@@ -143,6 +121,45 @@ var MINILD50;
 })(MINILD50 || (MINILD50 = {}));
 var MINILD50;
 (function (MINILD50) {
+    var LevelState = (function (_super) {
+        __extends(LevelState, _super);
+        function LevelState() {
+            _super.apply(this, arguments);
+        }
+        LevelState.prototype.preload = function () {
+            this.player = new MINILD50.Player(this.game, 130, 284);
+
+            this.GroupFloor = this.game.add.group();
+
+            this.Floor = new Array();
+
+            for (var x = 0; x < 10; x++) {
+                var floor = new MINILD50.Floor(this.game, x * 64, 350);
+                this.Floor.push(floor);
+                this.GroupFloor.add(floor);
+            }
+            for (var x = 0; x < 10; x++) {
+                var floor = new MINILD50.Floor(this.game, (x + 10) * 64, 390);
+                this.Floor.push(floor);
+                this.GroupFloor.add(floor);
+            }
+
+            this.game.physics.arcade.collide(this.player, this.GroupFloor);
+        };
+
+        LevelState.prototype.Update = function () {
+            this.player.body.velocity.x++;
+        };
+
+        LevelState.prototype.exit = function () {
+            this.player = null;
+        };
+        return LevelState;
+    })(Phaser.State);
+    MINILD50.LevelState = LevelState;
+})(MINILD50 || (MINILD50 = {}));
+var MINILD50;
+(function (MINILD50) {
     var PreloaderState = (function (_super) {
         __extends(PreloaderState, _super);
         function PreloaderState() {
@@ -152,13 +169,17 @@ var MINILD50;
             //load all images.
             this.load.image('graphics-character-placeholder', 'Content/Graphics/Character/PlaceHolder.png');
             this.load.image('content-graphics-menu-titleScreen', 'Content/Graphics/Menu/titleScreen.jpg');
+            this.load.image('graphics-Level-BuildingParts-Floor64', 'Content/Graphics/Level/BuildingParts/Floor64.png');
 
             //load all audio
             this.load.audio('content-audio-music-titleScreenMusic', 'Content/Audio/Music/titleScreenMusic.mp3');
 
             //  Set-up our preloader sprite
-            this.preloadBar = this.add.sprite(500, (screen.availHeight / 2) - 50, 'content-graphics-menu-loadingBar');
+            this.preloadBar = this.add.sprite((window.innerWidth / 2) - 400, (window.innerHeight / 2) - 25, 'content-graphics-menu-loadingBar');
             this.load.setPreloadSprite(this.preloadBar);
+
+            this.loadingMessage = this.game.add.text((window.innerWidth / 2) - 60, (window.innerHeight / 2) - 100, "Loading", { font: "30px Arial", fill: "#00ff00", stroke: '#000000', strokeThickness: 3 });
+            ;
         };
 
         PreloaderState.prototype.create = function () {
@@ -174,5 +195,24 @@ var MINILD50;
         return PreloaderState;
     })(Phaser.State);
     MINILD50.PreloaderState = PreloaderState;
+})(MINILD50 || (MINILD50 = {}));
+var MINILD50;
+(function (MINILD50) {
+    var BootState = (function (_super) {
+        __extends(BootState, _super);
+        function BootState() {
+            _super.apply(this, arguments);
+        }
+        BootState.prototype.preload = function () {
+            //load the loading bar BEFORE the main loading phase.
+            this.load.image('content-graphics-menu-loadingBar', 'Content/Graphics/Menu/loadingBar.jpg');
+        };
+
+        BootState.prototype.create = function () {
+            this.game.state.start('Preloader', true, false);
+        };
+        return BootState;
+    })(Phaser.State);
+    MINILD50.BootState = BootState;
 })(MINILD50 || (MINILD50 = {}));
 //# sourceMappingURL=MainGame.js.map
