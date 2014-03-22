@@ -11,6 +11,8 @@
             this.load.image('content-graphics-menu-loadingBar', 'Content/Graphics/Menu/loadingBar.jpg');
             this.preloadBar = this.add.sprite(200, 250, 'content-graphics-menu-loadingBar');
             this.load.setPreloadSprite(this.preloadBar);
+
+            this.load.image('graphics-character-placeholder', 'Content/Graphics/Character/PlaceHolder.png');
         }
 
        
