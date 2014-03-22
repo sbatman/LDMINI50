@@ -48,7 +48,6 @@
         startGame()
         {
             this.game.state.start('Level', true, false);
-
             //stop music and delete assets
             this.titleMusic.stop(); 
             this.prompt.destroy();   

@@ -17,6 +17,8 @@
             //  Set-up our preloader sprite
             this.preloadBar = this.add.sprite(500, (screen.availHeight/2) -50, 'content-graphics-menu-loadingBar');
             this.load.setPreloadSprite(this.preloadBar);
+            this.load.image('graphics-Level-BuildingParts-Floor64', 'Content/Graphics/Level/BuildingParts/Floor64.png');
+            
         }
 
        

@@ -8,10 +8,12 @@
             this.anchor.setTo(0.5, 0);          
             game.add.existing(this);
             game.physics.arcade.enable(this);
+            this.body.gravity.y = 6;
         }
 
         update()
         {
+            
             this.body.velocity.x = 0;
             if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
             {
