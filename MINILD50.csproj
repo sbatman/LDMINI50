@@ -18,9 +18,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="app.css" />
-    <Content Include="Content\Graphics\TestImage.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Content\Audio\Music\electronica-music-loop-1.mp3" />
     <Content Include="index.html" />
     <Content Include="Libs\Phaser\phaser.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -47,6 +45,9 @@
     <None Include="web.Release.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\Graphics\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

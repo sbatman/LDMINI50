@@ -12,11 +12,27 @@ var MINILD50;
     var MainGame = (function (_super) {
         __extends(MainGame, _super);
         function MainGame() {
-            _super.call(this, 800, 600, Phaser.AUTO, 'content', null);
+            _super.call(this, screen.availWidth, screen.availHeight - 100, Phaser.AUTO, 'content', null);
         }
         return MainGame;
     })(Phaser.Game);
     MINILD50.MainGame = MainGame;
+})(MINILD50 || (MINILD50 = {}));
+var MINILD50;
+(function (MINILD50) {
+    var BootState = (function (_super) {
+        __extends(BootState, _super);
+        function BootState() {
+            _super.apply(this, arguments);
+        }
+        BootState.prototype.preload = function () {
+        };
+
+        BootState.prototype.create = function () {
+        };
+        return BootState;
+    })(Phaser.State);
+    MINILD50.BootState = BootState;
 })(MINILD50 || (MINILD50 = {}));
 var MINILD50;
 (function (MINILD50) {
@@ -43,30 +59,17 @@ var MINILD50;
             _super.apply(this, arguments);
         }
         PreloaderState.prototype.preload = function () {
+            //Load audio in.
+            this.load.audio('titleScreenTrack', ['content/audio/music/electronica-music-loop.mp3']);
         };
 
         PreloaderState.prototype.create = function () {
-            //  this.game.state.start('Preloader', true, false);
+            var titleMusic = this.add.audio('titleScreenTrack', 1, true);
+
+            titleMusic.play('titleScreenTrack', 0, 1, true);
         };
         return PreloaderState;
     })(Phaser.State);
     MINILD50.PreloaderState = PreloaderState;
-})(MINILD50 || (MINILD50 = {}));
-var MINILD50;
-(function (MINILD50) {
-    var BootState = (function (_super) {
-        __extends(BootState, _super);
-        function BootState() {
-            _super.apply(this, arguments);
-        }
-        BootState.prototype.preload = function () {
-        };
-
-        BootState.prototype.create = function () {
-            //  this.game.state.start('Preloader', true, false);
-        };
-        return BootState;
-    })(Phaser.State);
-    MINILD50.BootState = BootState;
 })(MINILD50 || (MINILD50 = {}));
 //# sourceMappingURL=MainGame.js.map
