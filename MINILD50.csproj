@@ -18,6 +18,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="app.css" />
+    <Content Include="Content\Audio\Music\titleScreenMusic.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Graphics\Character\PlaceHolder.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -33,6 +36,8 @@
     <Content Include="Content\Graphics\Level\BuildingParts\Panel64.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Graphics\Menu\loadingBar.jpg" />
+    <Content Include="Content\Graphics\Menu\titleScreen.jpg" />
     <Content Include="index.html" />
     <Content Include="Libs\Phaser\phaser.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -40,7 +45,9 @@
     <Content Include="Libs\Phaser\phaser.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="web.config" />
+    <Content Include="web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app.ts" />

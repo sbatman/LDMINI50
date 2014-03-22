@@ -15,7 +15,5 @@
 
             this.state.start('Preloader');
         }
-
-
     }
 }
