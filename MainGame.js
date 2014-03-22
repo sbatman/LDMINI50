@@ -12,7 +12,7 @@ var MINILD50;
     var Floor = (function (_super) {
         __extends(Floor, _super);
         function Floor(game, x, y) {
-            _super.call(this, game, x, y, 'graphics-Level-BuildingParts-Floor64');
+            _super.call(this, game, x, y, 'graphics-Level-BuildingParts-Roof128-1');
             this.anchor.setTo(0.5, 0);
             game.add.existing(this);
             game.physics.arcade.enable(this);
@@ -33,10 +33,8 @@ var MINILD50;
             this.anchor.setTo(0.5, 0);
             game.add.existing(this);
             game.physics.arcade.enable(this);
-            this.body.bounce.y = 0.2;
+            this.body.bounce.y = 0.1;
             this.body.collideWorldBounds = true;
-
-            game.debug.body(this);
         }
         Player.prototype.PhysicsUpdate = function () {
             if (this.body.touching.down) {
@@ -54,7 +52,7 @@ var MINILD50;
                     }
                 }
                 if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-                    this.body.velocity.y = -350;
+                    this.body.velocity.y = -190;
                 }
             }
         };
@@ -79,6 +77,73 @@ var MINILD50;
         return MainGame;
     })(Phaser.Game);
     MINILD50.MainGame = MainGame;
+})(MINILD50 || (MINILD50 = {}));
+var MINILD50;
+(function (MINILD50) {
+    var BootState = (function (_super) {
+        __extends(BootState, _super);
+        function BootState() {
+            _super.apply(this, arguments);
+        }
+        BootState.prototype.preload = function () {
+            //load the loading bar BEFORE the main loading phase.
+            this.load.image('content-graphics-menu-loadingBar', 'Content/Graphics/Menu/loader.jpg');
+        };
+
+        BootState.prototype.create = function () {
+            this.game.state.start('Preloader', true, false);
+        };
+        return BootState;
+    })(Phaser.State);
+    MINILD50.BootState = BootState;
+})(MINILD50 || (MINILD50 = {}));
+var MINILD50;
+(function (MINILD50) {
+    var LevelState = (function (_super) {
+        __extends(LevelState, _super);
+        function LevelState() {
+            _super.apply(this, arguments);
+        }
+        LevelState.prototype.preload = function () {
+            //create the background and draw it as sky blue.
+            this.Background = this.game.add.graphics(0, 0);
+            this.Background.beginFill(0x87CEEB, 1);
+            this.Background.drawRect(0, 0, window.innerWidth, window.innerHeight);
+
+            //play theme music.
+            this.ThemeMusic = this.add.audio('content-audio-music-gameTheme', 0.5, true);
+            this.ThemeMusic.play();
+
+            this.player = new MINILD50.Player(this.game, 10, 284);
+
+            this.game.physics.arcade.gravity.y = 250;
+            this.GroupFloor = this.game.add.group();
+
+            this.Floor = new Array();
+
+            var pos = 0;
+            for (var x = 0; x < 10; x++) {
+                pos += this.rnd.integerInRange(0, 100);
+                var floor = new MINILD50.Floor(this.game, pos, this.rnd.integerInRange(350, 420));
+                this.Floor.push(floor);
+                this.GroupFloor.add(floor);
+                pos += 128;
+            }
+        };
+
+        LevelState.prototype.update = function () {
+            this.game.physics.arcade.collide(this.player, this.GroupFloor);
+            this.player.PhysicsUpdate();
+            this.game.camera.follow(this.player);
+        };
+
+        LevelState.prototype.exit = function () {
+            this.player = null;
+            this.ThemeMusic.stop();
+        };
+        return LevelState;
+    })(Phaser.State);
+    MINILD50.LevelState = LevelState;
 })(MINILD50 || (MINILD50 = {}));
 var MINILD50;
 (function (MINILD50) {
@@ -132,55 +197,6 @@ var MINILD50;
 })(MINILD50 || (MINILD50 = {}));
 var MINILD50;
 (function (MINILD50) {
-    var LevelState = (function (_super) {
-        __extends(LevelState, _super);
-        function LevelState() {
-            _super.apply(this, arguments);
-        }
-        LevelState.prototype.preload = function () {
-            //create the background and draw it as sky blue.
-            this.Background = this.game.add.graphics(0, 0);
-            this.Background.beginFill(0x87CEEB, 1);
-            this.Background.drawRect(0, 0, window.innerWidth, window.innerHeight);
-
-            //play theme music.
-            this.ThemeMusic = this.add.audio('content-audio-music-gameTheme', 0.5, true);
-            this.ThemeMusic.play();
-
-            this.player = new MINILD50.Player(this.game, 130, 284);
-            this.game.physics.arcade.gravity.y = 250;
-            this.GroupFloor = this.game.add.group();
-
-            this.Floor = new Array();
-
-            for (var x = 0; x < 10; x++) {
-                var floor = new MINILD50.Floor(this.game, x * 64, 350);
-                this.Floor.push(floor);
-                this.GroupFloor.add(floor);
-            }
-            for (var x = 0; x < 10; x++) {
-                var floor = new MINILD50.Floor(this.game, (x + 10) * 64, 390);
-                this.Floor.push(floor);
-                this.GroupFloor.add(floor);
-            }
-        };
-
-        LevelState.prototype.update = function () {
-            this.game.physics.arcade.collide(this.player, this.GroupFloor);
-            this.player.PhysicsUpdate();
-            this.game.debug.body(this.player);
-        };
-
-        LevelState.prototype.exit = function () {
-            this.player = null;
-            this.ThemeMusic.stop();
-        };
-        return LevelState;
-    })(Phaser.State);
-    MINILD50.LevelState = LevelState;
-})(MINILD50 || (MINILD50 = {}));
-var MINILD50;
-(function (MINILD50) {
     var PreloaderState = (function (_super) {
         __extends(PreloaderState, _super);
         function PreloaderState() {
@@ -190,7 +206,7 @@ var MINILD50;
             //load all images.
             this.load.image('graphics-character-placeholder', 'Content/Graphics/Character/PlaceHolder.png');
             this.load.image('content-graphics-menu-titleScreen', 'Content/Graphics/Menu/titleScreen.jpg');
-            this.load.image('graphics-Level-BuildingParts-Floor64', 'Content/Graphics/Level/BuildingParts/Floor64.png');
+            this.load.image('graphics-Level-BuildingParts-Roof128-1', 'Content/Graphics/Level/BuildingParts/Roof128-1.png');
 
             //load all audio
             this.load.audio('content-audio-music-titleScreenMusic', 'Content/Audio/Music/titleScreenMusic.mp3');
@@ -217,24 +233,5 @@ var MINILD50;
         return PreloaderState;
     })(Phaser.State);
     MINILD50.PreloaderState = PreloaderState;
-})(MINILD50 || (MINILD50 = {}));
-var MINILD50;
-(function (MINILD50) {
-    var BootState = (function (_super) {
-        __extends(BootState, _super);
-        function BootState() {
-            _super.apply(this, arguments);
-        }
-        BootState.prototype.preload = function () {
-            //load the loading bar BEFORE the main loading phase.
-            this.load.image('content-graphics-menu-loadingBar', 'Content/Graphics/Menu/loader.jpg');
-        };
-
-        BootState.prototype.create = function () {
-            this.game.state.start('Preloader', true, false);
-        };
-        return BootState;
-    })(Phaser.State);
-    MINILD50.BootState = BootState;
 })(MINILD50 || (MINILD50 = {}));
 //# sourceMappingURL=MainGame.js.map

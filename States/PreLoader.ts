@@ -11,7 +11,7 @@
             //load all images.
             this.load.image('graphics-character-placeholder', 'Content/Graphics/Character/PlaceHolder.png');
             this.load.image('content-graphics-menu-titleScreen', 'Content/Graphics/Menu/titleScreen.jpg');
-            this.load.image('graphics-Level-BuildingParts-Floor64', 'Content/Graphics/Level/BuildingParts/Floor64.png');
+            this.load.image('graphics-Level-BuildingParts-Roof128-1', 'Content/Graphics/Level/BuildingParts/Roof128-1.png');
 
             //load all audio
             this.load.audio('content-audio-music-titleScreenMusic', 'Content/Audio/Music/titleScreenMusic.mp3');

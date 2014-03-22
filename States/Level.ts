@@ -15,27 +15,28 @@
             this.Background.beginFill(0x87CEEB, 1)
             this.Background.drawRect(0, 0, window.innerWidth, window.innerHeight);
 
+
             //play theme music.
             this.ThemeMusic = this.add.audio('content-audio-music-gameTheme', 0.5, true);
             this.ThemeMusic.play();
 
-            this.player = new Player(this.game, 130, 284);
+            this.player = new Player(this.game, 10, 284);
+
             this.game.physics.arcade.gravity.y = 250;
             this.GroupFloor = this.game.add.group();
 
+            
+
             this.Floor = new Array<MINILD50.Floor>();
 
+            var pos = 0;
             for (var x = 0; x < 10; x++)
             {
-                var floor = new MINILD50.Floor(this.game, x * 64, 350);
+                pos += this.rnd.integerInRange(0, 100);           
+                var floor = new MINILD50.Floor(this.game, pos, this.rnd.integerInRange(350, 420));
                 this.Floor.push(floor);
                 this.GroupFloor.add(floor);
-            }
-            for (var x = 0; x < 10; x++)
-            {
-                var floor  = new MINILD50.Floor(this.game, (x + 10) * 64, 390);
-                this.Floor.push(floor);
-                this.GroupFloor.add(floor);
+                pos += 128;
             }
 
             
@@ -45,8 +46,7 @@
         {
             this.game.physics.arcade.collide(this.player, this.GroupFloor);
             this.player.PhysicsUpdate();
-            this.game.debug.body(this.player);
-
+            this.game.camera.follow(this.player);
         }
 
         exit()

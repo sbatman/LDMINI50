@@ -8,11 +8,8 @@
             this.anchor.setTo(0.5, 0);          
             game.add.existing(this);
             game.physics.arcade.enable(this);
-            this.body.bounce.y = 0.2;    
+            this.body.bounce.y = 0.1;    
             this.body.collideWorldBounds = true;
-
-            game.debug.body(this);
-
         }
 
         PhysicsUpdate()
@@ -39,7 +36,7 @@
                 }
                 if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP))
                 {
-                    this.body.velocity.y = -350;
+                    this.body.velocity.y = -190;
                 }
             }
         }
