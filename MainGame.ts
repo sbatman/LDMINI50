@@ -4,7 +4,15 @@
     {
         constructor()
         {
-            super(screen.availWidth, screen.availHeight-100, Phaser.AUTO, 'content', null);
+            super(screen.availWidth, screen.availHeight - 100, Phaser.AUTO, 'content', null);
+           
+            this.state.add('Boot', BootState, false);
+            this.state.add('Preloader', PreloaderState, false);
+            this.state.add('MainMenu', MenuState, false);
+
+            this.state.start('Boot');
         }
+
+
     }
 }
