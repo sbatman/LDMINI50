@@ -9,7 +9,7 @@
         preload()
         {
             this.player = new Player(this.game, 130, 284);
-
+            this.game.physics.arcade.gravity.y = 250;
             this.GroupFloor = this.game.add.group();
 
             this.Floor = new Array<MINILD50.Floor>();
@@ -27,12 +27,15 @@
                 this.GroupFloor.add(floor);
             }
 
-            this.game.physics.arcade.collide(this.player, this.GroupFloor);
+            
         }
 
-        Update()
+        update()
         {
-            this.player.body.velocity.x++;
+            this.game.physics.arcade.collide(this.player, this.GroupFloor);
+            this.player.PhysicsUpdate();
+            this.game.debug.body(this.player);
+
         }
 
         exit()
