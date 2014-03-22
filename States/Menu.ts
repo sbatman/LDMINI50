@@ -21,12 +21,15 @@
 
             this.background = this.add.sprite(0, 0, 'content-graphics-menu-titleScreen');
             this.background.alpha = 0;
+            this.background.width = screen.availWidth;
+            this.background.height = screen.availHeight - 100
 
             this.prompt = this.game.add.text((this.camera.width / 2) - 100, this.camera.height / 2, "Press Enter to Start", { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
+            this.prompt.alpha = 0;
 
             //add animations
             this.add.tween(this.background).to({ alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
-            //this.add.tween(this.prompt).to({ alpha: 1 }, 2000, Phaser.Easing.Bounce.InOut, true);
+            this.add.tween(this.prompt).to({ alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
 
             //put event handler on user input to load the game fully when the user clicks a button.
             this.input.onDown.addOnce(this.fadeOut, this);
@@ -34,11 +37,10 @@
 
         //when user provides input, fade the menu screen out and load the first level.
         fadeOut()
-        {
-            //delete text prompt
-            this.prompt.destroy();
-
+        {      
+            this.add.tween(this.prompt).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
             var tween = this.add.tween(this.background).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+
             tween.onComplete.add(this.startGame, this);
         }
 
@@ -48,7 +50,8 @@
             this.game.state.start('Level', true, false);
 
             //stop music and delete assets
-            this.titleMusic.stop();    
+            this.titleMusic.stop(); 
+            this.prompt.destroy();   
         }
     }
 }
