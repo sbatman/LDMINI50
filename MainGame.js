@@ -16,6 +16,9 @@ var MINILD50;
             this.anchor.setTo(0.5, 0);
             game.add.existing(this);
             game.physics.arcade.enable(this);
+            this.body.immovable = true;
+
+            this.body.allowGravity = false;
         }
         return Floor;
     })(Phaser.Sprite);
@@ -30,19 +33,28 @@ var MINILD50;
             this.anchor.setTo(0.5, 0);
             game.add.existing(this);
             game.physics.arcade.enable(this);
-            this.body.gravity.y = 6;
+            this.body.bounce.y = 0.2;
+            this.body.collideWorldBounds = true;
+
+            game.debug.body(this);
         }
-        Player.prototype.update = function () {
-            this.body.velocity.x = 0;
-            if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-                this.body.velocity.x = -150;
-                if (this.scale.x == 1) {
-                    this.scale.x = -1;
+        Player.prototype.PhysicsUpdate = function () {
+            if (this.body.touching.down) {
+                this.body.velocity.x *= 0.95;
+
+                if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+                    this.body.velocity.x = -150;
+                    if (this.scale.x == 1) {
+                        this.scale.x = -1;
+                    }
+                } else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+                    this.body.velocity.x = 150;
+                    if (this.scale.x == -1) {
+                        this.scale.x = 1;
+                    }
                 }
-            } else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-                this.body.velocity.x = 150;
-                if (this.scale.x == -1) {
-                    this.scale.x = 1;
+                if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
+                    this.body.velocity.y = -350;
                 }
             }
         };
@@ -131,8 +143,12 @@ var MINILD50;
             this.Background.beginFill(0x87CEEB, 1);
             this.Background.drawRect(0, 0, window.innerWidth, window.innerHeight);
 
-            this.player = new MINILD50.Player(this.game, 130, 284);
+            //play theme music.
+            this.ThemeMusic = this.add.audio('content-audio-music-gameTheme', 0.5, true);
+            this.ThemeMusic.play();
 
+            this.player = new MINILD50.Player(this.game, 130, 284);
+            this.game.physics.arcade.gravity.y = 250;
             this.GroupFloor = this.game.add.group();
 
             this.Floor = new Array();
@@ -147,16 +163,17 @@ var MINILD50;
                 this.Floor.push(floor);
                 this.GroupFloor.add(floor);
             }
-
-            this.game.physics.arcade.collide(this.player, this.GroupFloor);
         };
 
-        LevelState.prototype.Update = function () {
-            this.player.body.velocity.x++;
+        LevelState.prototype.update = function () {
+            this.game.physics.arcade.collide(this.player, this.GroupFloor);
+            this.player.PhysicsUpdate();
+            this.game.debug.body(this.player);
         };
 
         LevelState.prototype.exit = function () {
             this.player = null;
+            this.ThemeMusic.stop();
         };
         return LevelState;
     })(Phaser.State);
@@ -177,12 +194,13 @@ var MINILD50;
 
             //load all audio
             this.load.audio('content-audio-music-titleScreenMusic', 'Content/Audio/Music/titleScreenMusic.mp3');
+            this.load.audio('content-audio-music-gameTheme', 'Content/Audio/Music/gameTheme.mp3');
 
             //  Set-up our preloader sprite
-            this.preloadBar = this.add.sprite((window.innerWidth / 2) - 400, (window.innerHeight / 2) - 25, 'content-graphics-menu-loadingBar');
+            this.preloadBar = this.add.sprite((window.innerWidth / 2) - 200, (window.innerHeight / 2) - 20, 'content-graphics-menu-loadingBar');
             this.load.setPreloadSprite(this.preloadBar);
 
-            this.loadingMessage = this.game.add.text((window.innerWidth / 2) - 60, (window.innerHeight / 2) - 100, "Loading", { font: "30px Arial", fill: "#00ff00", stroke: '#000000', strokeThickness: 3 });
+            this.loadingMessage = this.game.add.text((window.innerWidth / 2) - 50, (window.innerHeight / 2) - 100, "Loading", { font: "30px Arial", fill: "#00ff00", stroke: '#000000', strokeThickness: 3 });
             ;
         };
 

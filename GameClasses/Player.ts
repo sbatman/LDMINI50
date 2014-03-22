@@ -8,27 +8,38 @@
             this.anchor.setTo(0.5, 0);          
             game.add.existing(this);
             game.physics.arcade.enable(this);
-            this.body.gravity.y = 6;
+            this.body.bounce.y = 0.2;    
+            this.body.collideWorldBounds = true;
+
+            game.debug.body(this);
+
         }
 
-        update()
+        PhysicsUpdate()
         {
-            
-            this.body.velocity.x = 0;
-            if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
+            if (this.body.touching.down)
             {
-                this.body.velocity.x = -150;
-                if (this.scale.x == 1)
+                this.body.velocity.x *= 0.95;
+
+                if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
                 {
-                    this.scale.x = -1;
+                    this.body.velocity.x = -150;
+                    if (this.scale.x == 1)
+                    {
+                        this.scale.x = -1;
+                    }
                 }
-            }
-            else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT))
-            {
-                this.body.velocity.x = 150;
-                if (this.scale.x == -1)
+                else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT))
                 {
-                    this.scale.x = 1;
+                    this.body.velocity.x = 150;
+                    if (this.scale.x == -1)
+                    {
+                        this.scale.x = 1;
+                    }
+                }
+                if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP))
+                {
+                    this.body.velocity.y = -350;
                 }
             }
         }

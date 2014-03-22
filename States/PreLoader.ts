@@ -15,12 +15,13 @@
 
             //load all audio
             this.load.audio('content-audio-music-titleScreenMusic', 'Content/Audio/Music/titleScreenMusic.mp3');
+            this.load.audio('content-audio-music-gameTheme', 'Content/Audio/Music/gameTheme.mp3');
 
             //  Set-up our preloader sprite
-            this.preloadBar = this.add.sprite((window.innerWidth / 2) - 400, (window.innerHeight/2) -25, 'content-graphics-menu-loadingBar');
+            this.preloadBar = this.add.sprite((window.innerWidth / 2) - 200, (window.innerHeight/2) -20, 'content-graphics-menu-loadingBar');
             this.load.setPreloadSprite(this.preloadBar);  
             
-            this.loadingMessage = this.game.add.text((window.innerWidth / 2) - 60, (window.innerHeight / 2) -100, "Loading", { font: "30px Arial", fill: "#00ff00", stroke: '#000000', strokeThickness: 3 });;      
+            this.loadingMessage = this.game.add.text((window.innerWidth / 2) - 50, (window.innerHeight / 2) -100, "Loading", { font: "30px Arial", fill: "#00ff00", stroke: '#000000', strokeThickness: 3 });;      
         }
 
        

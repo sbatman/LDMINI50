@@ -6,6 +6,7 @@
         Floor: Array<MINILD50.Floor>;
         GroupFloor: Phaser.Group;
         Background: Phaser.Graphics;
+        ThemeMusic: Phaser.Sound;
 
         preload()
         {
@@ -14,8 +15,12 @@
             this.Background.beginFill(0x87CEEB, 1)
             this.Background.drawRect(0, 0, window.innerWidth, window.innerHeight);
 
-            this.player = new Player(this.game, 130, 284);
+            //play theme music.
+            this.ThemeMusic = this.add.audio('content-audio-music-gameTheme', 0.5, true);
+            this.ThemeMusic.play();
 
+            this.player = new Player(this.game, 130, 284);
+            this.game.physics.arcade.gravity.y = 250;
             this.GroupFloor = this.game.add.group();
 
             this.Floor = new Array<MINILD50.Floor>();
@@ -33,17 +38,21 @@
                 this.GroupFloor.add(floor);
             }
 
-            this.game.physics.arcade.collide(this.player, this.GroupFloor);
+            
         }
 
-        Update()
+        update()
         {
-            this.player.body.velocity.x++;
+            this.game.physics.arcade.collide(this.player, this.GroupFloor);
+            this.player.PhysicsUpdate();
+            this.game.debug.body(this.player);
+
         }
 
         exit()
         {
             this.player = null;
+            this.ThemeMusic.stop();
         }
     }
 }
