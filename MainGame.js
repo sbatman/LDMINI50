@@ -13,6 +13,12 @@ var MINILD50;
         __extends(MainGame, _super);
         function MainGame() {
             _super.call(this, screen.availWidth, screen.availHeight - 100, Phaser.AUTO, 'content', null);
+
+            this.state.add('Boot', MINILD50.BootState, false);
+            this.state.add('Preloader', MINILD50.PreloaderState, false);
+            this.state.add('MainMenu', MINILD50.MenuState, false);
+
+            this.state.start('Boot');
         }
         return MainGame;
     })(Phaser.Game);
@@ -29,6 +35,7 @@ var MINILD50;
         };
 
         BootState.prototype.create = function () {
+            //  this.game.state.start('Preloader', true, false);
         };
         return BootState;
     })(Phaser.State);
@@ -59,14 +66,10 @@ var MINILD50;
             _super.apply(this, arguments);
         }
         PreloaderState.prototype.preload = function () {
-            //Load audio in.
-            this.load.audio('titleScreenTrack', ['content/audio/music/electronica-music-loop.mp3']);
         };
 
         PreloaderState.prototype.create = function () {
-            var titleMusic = this.add.audio('titleScreenTrack', 1, true);
-
-            titleMusic.play('titleScreenTrack', 0, 1, true);
+            //  this.game.state.start('Preloader', true, false);
         };
         return PreloaderState;
     })(Phaser.State);

@@ -5,13 +5,15 @@
 
         preload()
         {
-          
 
+            
+            
         }
 
         create()
         {
 
+          //  this.game.state.start('Preloader', true, false);
 
         }
 
