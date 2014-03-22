@@ -111,3 +111,5 @@ UpgradeLog*.XML
 /MainGame.js
 /Game.js
 /app.js
+/*.map
+/MainGame.js
