@@ -18,11 +18,60 @@ var MINILD50;
             this.state.add('Preloader', MINILD50.PreloaderState, false);
             this.state.add('MainMenu', MINILD50.MenuState, false);
 
-            this.state.start('Boot');
+            this.state.start('Preloader');
         }
         return MainGame;
     })(Phaser.Game);
     MINILD50.MainGame = MainGame;
+})(MINILD50 || (MINILD50 = {}));
+var MINILD50;
+(function (MINILD50) {
+    var MenuState = (function (_super) {
+        __extends(MenuState, _super);
+        function MenuState() {
+            _super.apply(this, arguments);
+        }
+        MenuState.prototype.preload = function () {
+            //Load audio in.
+            this.load.audio('content-audio-music-titleScreenMusic', 'Content/Audio/Music/titleScreenMusic.mp3');
+        };
+
+        MenuState.prototype.create = function () {
+            //play title music.
+            this.titleMusic = this.add.audio('content-audio-music-titleScreenMusic', 1, true);
+            this.titleMusic.play();
+        };
+        return MenuState;
+    })(Phaser.State);
+    MINILD50.MenuState = MenuState;
+})(MINILD50 || (MINILD50 = {}));
+var MINILD50;
+(function (MINILD50) {
+    var PreloaderState = (function (_super) {
+        __extends(PreloaderState, _super);
+        function PreloaderState() {
+            _super.apply(this, arguments);
+        }
+        PreloaderState.prototype.preload = function () {
+            //  Set-up our preloader sprite
+            this.load.image('content-graphics-menu-loadingBar', 'Content/Graphics/Menu/loadingBar.jpg');
+            this.preloadBar = this.add.sprite(200, 250, 'content-graphics-menu-loadingBar');
+            this.load.setPreloadSprite(this.preloadBar);
+        };
+
+        PreloaderState.prototype.create = function () {
+            //allow the loading bar to animate as assets load, and switch to the main menu game state when loading completes.
+            var tween = this.add.tween(this.preloadBar).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+            tween.onComplete.add(this.startMainMenu, this);
+        };
+
+        //switch to the main menu state at this point.
+        PreloaderState.prototype.startMainMenu = function () {
+            this.game.state.start('MainMenu', true, false);
+        };
+        return PreloaderState;
+    })(Phaser.State);
+    MINILD50.PreloaderState = PreloaderState;
 })(MINILD50 || (MINILD50 = {}));
 var MINILD50;
 (function (MINILD50) {
@@ -40,39 +89,5 @@ var MINILD50;
         return BootState;
     })(Phaser.State);
     MINILD50.BootState = BootState;
-})(MINILD50 || (MINILD50 = {}));
-var MINILD50;
-(function (MINILD50) {
-    var MenuState = (function (_super) {
-        __extends(MenuState, _super);
-        function MenuState() {
-            _super.apply(this, arguments);
-        }
-        MenuState.prototype.preload = function () {
-        };
-
-        MenuState.prototype.create = function () {
-            //  this.game.state.start('Preloader', true, false);
-        };
-        return MenuState;
-    })(Phaser.State);
-    MINILD50.MenuState = MenuState;
-})(MINILD50 || (MINILD50 = {}));
-var MINILD50;
-(function (MINILD50) {
-    var PreloaderState = (function (_super) {
-        __extends(PreloaderState, _super);
-        function PreloaderState() {
-            _super.apply(this, arguments);
-        }
-        PreloaderState.prototype.preload = function () {
-        };
-
-        PreloaderState.prototype.create = function () {
-            //  this.game.state.start('Preloader', true, false);
-        };
-        return PreloaderState;
-    })(Phaser.State);
-    MINILD50.PreloaderState = PreloaderState;
 })(MINILD50 || (MINILD50 = {}));
 //# sourceMappingURL=MainGame.js.map

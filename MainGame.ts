@@ -10,9 +10,7 @@
             this.state.add('Preloader', PreloaderState, false);
             this.state.add('MainMenu', MenuState, false);
 
-            this.state.start('Boot');
+            this.state.start('Preloader');
         }
-
-
     }
 }
