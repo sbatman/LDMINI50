@@ -24,7 +24,7 @@
             this.background.width = window.innerWidth;
             this.background.height = window.innerHeight;
 
-            this.prompt = this.game.add.text((this.camera.width / 2) - 90, this.camera.height / 2, "Click to Start", { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
+            this.prompt = this.game.add.text((window.innerWidth / 2) - 90, window.innerHeight / 2, "Click to Start", { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
             this.prompt.alpha = 0;
 
             //add animations
@@ -48,9 +48,9 @@
         startGame()
         {
             this.game.state.start('Level', true, false);
-            //stop music and delete assets
+            
+            //stop music
             this.titleMusic.stop(); 
-            this.prompt.destroy();   
         }
     }
 }

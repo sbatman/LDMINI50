@@ -5,9 +5,15 @@
         player: MINILD50.Player;
         Floor: Array<MINILD50.Floor>;
         GroupFloor: Phaser.Group;
+        Background: Phaser.Graphics;
 
         preload()
         {
+            //create the background and draw it as sky blue.
+            this.Background = this.game.add.graphics(0, 0);
+            this.Background.beginFill(0x87CEEB, 1)
+            this.Background.drawRect(0, 0, window.innerWidth, window.innerHeight);
+
             this.player = new Player(this.game, 130, 284);
 
             this.GroupFloor = this.game.add.group();

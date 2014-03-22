@@ -88,7 +88,7 @@ var MINILD50;
             this.background.width = window.innerWidth;
             this.background.height = window.innerHeight;
 
-            this.prompt = this.game.add.text((this.camera.width / 2) - 90, this.camera.height / 2, "Click to Start", { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
+            this.prompt = this.game.add.text((window.innerWidth / 2) - 90, window.innerHeight / 2, "Click to Start", { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
             this.prompt.alpha = 0;
 
             //add animations
@@ -111,9 +111,8 @@ var MINILD50;
         MenuState.prototype.startGame = function () {
             this.game.state.start('Level', true, false);
 
-            //stop music and delete assets
+            //stop music
             this.titleMusic.stop();
-            this.prompt.destroy();
         };
         return MenuState;
     })(Phaser.State);
@@ -127,6 +126,11 @@ var MINILD50;
             _super.apply(this, arguments);
         }
         LevelState.prototype.preload = function () {
+            //create the background and draw it as sky blue.
+            this.Background = this.game.add.graphics(0, 0);
+            this.Background.beginFill(0x87CEEB, 1);
+            this.Background.drawRect(0, 0, window.innerWidth, window.innerHeight);
+
             this.player = new MINILD50.Player(this.game, 130, 284);
 
             this.GroupFloor = this.game.add.group();
