@@ -7,12 +7,16 @@
 
         preload()
         {
-            //  Set-up our preloader sprite
-            this.load.image('content-graphics-menu-loadingBar', 'Content/Graphics/Menu/loadingBar.jpg');
-            this.preloadBar = this.add.sprite(200, 250, 'content-graphics-menu-loadingBar');
-            this.load.setPreloadSprite(this.preloadBar);
-
+            //load all images.
             this.load.image('graphics-character-placeholder', 'Content/Graphics/Character/PlaceHolder.png');
+            this.load.image('content-graphics-menu-titleScreen', 'Content/Graphics/Menu/titleScreen.jpg');
+
+            //load all audio
+            this.load.audio('content-audio-music-titleScreenMusic', 'Content/Audio/Music/titleScreenMusic.mp3');
+
+            //  Set-up our preloader sprite
+            this.preloadBar = this.add.sprite(500, (screen.availHeight/2) -50, 'content-graphics-menu-loadingBar');
+            this.load.setPreloadSprite(this.preloadBar);
         }
 
        
@@ -26,9 +30,6 @@
         //switch to the main menu state at this point.
         startMainMenu()
         {
-            //dispose of the preload bar
-            this.preloadBar = null;
-
             this.game.state.start('MainMenu', true, false);
         }
     }

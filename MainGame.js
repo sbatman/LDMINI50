@@ -47,7 +47,7 @@ var MINILD50;
             this.state.add('MainMenu', MINILD50.MenuState, false);
             this.state.add('Level', MINILD50.LevelState, false);
 
-            this.state.start('Preloader');
+            this.state.start('Boot');
         }
         return MainGame;
     })(Phaser.Game);
@@ -61,11 +61,6 @@ var MINILD50;
             _super.apply(this, arguments);
         }
         MenuState.prototype.preload = function () {
-            //Load audio in.
-            this.load.audio('content-audio-music-titleScreenMusic', 'Content/Audio/Music/titleScreenMusic.mp3');
-
-            //load graphics in.
-            this.load.image('titleScreen', 'Content/Graphics/Menu/titleScreen.jpg');
         };
 
         MenuState.prototype.create = function () {
@@ -73,7 +68,7 @@ var MINILD50;
             this.titleMusic = this.add.audio('content-audio-music-titleScreenMusic', 1, true);
             this.titleMusic.play();
 
-            this.background = this.add.sprite(0, 0, 'titleScreen');
+            this.background = this.add.sprite(0, 0, 'content-graphics-menu-titleScreen');
             this.background.alpha = 0;
 
             this.prompt = this.game.add.text((this.camera.width / 2) - 100, this.camera.height / 2, "Press Enter to Start", { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
@@ -89,7 +84,7 @@ var MINILD50;
         //when user provides input, fade the menu screen out and load the first level.
         MenuState.prototype.fadeOut = function () {
             //delete text prompt
-            this.prompt = null;
+            this.prompt.destroy();
 
             var tween = this.add.tween(this.background).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
             tween.onComplete.add(this.startGame, this);
@@ -101,8 +96,6 @@ var MINILD50;
 
             //stop music and delete assets
             this.titleMusic.stop();
-            this.titleMusic = null;
-            this.background = null;
         };
         return MenuState;
     })(Phaser.State);
@@ -134,9 +127,15 @@ var MINILD50;
             _super.apply(this, arguments);
         }
         PreloaderState.prototype.preload = function () {
+            //load all images.
+            this.load.image('graphics-character-placeholder', 'Content/Graphics/Character/PlaceHolder.png');
+            this.load.image('content-graphics-menu-titleScreen', 'Content/Graphics/Menu/titleScreen.jpg');
+
+            //load all audio
+            this.load.audio('content-audio-music-titleScreenMusic', 'Content/Audio/Music/titleScreenMusic.mp3');
+
             //  Set-up our preloader sprite
-            this.load.image('content-graphics-menu-loadingBar', 'Content/Graphics/Menu/loadingBar.jpg');
-            this.preloadBar = this.add.sprite(200, 250, 'content-graphics-menu-loadingBar');
+            this.preloadBar = this.add.sprite(500, (screen.availHeight / 2) - 50, 'content-graphics-menu-loadingBar');
             this.load.setPreloadSprite(this.preloadBar);
         };
 
@@ -162,10 +161,12 @@ var MINILD50;
             _super.apply(this, arguments);
         }
         BootState.prototype.preload = function () {
+            //load the loading bar BEFORE the main loading phase.
+            this.load.image('content-graphics-menu-loadingBar', 'Content/Graphics/Menu/loadingBar.jpg');
         };
 
         BootState.prototype.create = function () {
-            //  this.game.state.start('Preloader', true, false);
+            this.game.state.start('Preloader', true, false);
         };
         return BootState;
     })(Phaser.State);
