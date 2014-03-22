@@ -2,10 +2,11 @@
 {
     export class MenuState extends Phaser.State
     {
-        //reference to the title music object.
+        //references
         titleMusic: Phaser.Sound;
         background: Phaser.Sprite;
         prompt:     Phaser.Text;
+
 
         preload()
         {
@@ -31,8 +32,6 @@
             this.add.tween(this.background).to({ alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
             //this.add.tween(this.prompt).to({ alpha: 1 }, 2000, Phaser.Easing.Bounce.InOut, true);
 
-
-
             //put event handler on user input to load the game fully when the user clicks a button.
             this.input.onDown.addOnce(this.fadeOut, this);
         }
@@ -55,8 +54,7 @@
             //stop music and delete assets
             this.titleMusic.stop();
             this.titleMusic = null;
-            this.background = null;
-            
+            this.background = null;        
         }
     }
 }
