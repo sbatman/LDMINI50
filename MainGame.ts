@@ -4,7 +4,7 @@
     {
         constructor()
         {
-            super(800, 600, Phaser.AUTO, 'content', null);
+            super(screen.availWidth, screen.availHeight-100, Phaser.AUTO, 'content', null);
         }
     }
 }
