@@ -6,19 +6,19 @@
 };
 var MINILD50;
 (function (MINILD50) {
-    var Boot = (function (_super) {
-        __extends(Boot, _super);
-        function Boot() {
+    var BootState = (function (_super) {
+        __extends(BootState, _super);
+        function BootState() {
             _super.apply(this, arguments);
         }
-        Boot.prototype.preload = function () {
+        BootState.prototype.preload = function () {
+            this.load.image('content-graphics-menu-loadingBar', 'Content/Graphics/Menu/loader.jpg');
         };
 
-        Boot.prototype.create = function () {
-            //  this.game.state.start('Preloader', true, false);
+        BootState.prototype.create = function () {
+            this.game.state.start('Preloader', true, false);
         };
-        return Boot;
+        return BootState;
     })(Phaser.State);
-    MINILD50.Boot = Boot;
+    MINILD50.BootState = BootState;
 })(MINILD50 || (MINILD50 = {}));
-//# sourceMappingURL=Boot.js.map
