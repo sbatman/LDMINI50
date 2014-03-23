@@ -53,7 +53,7 @@
                 }
                 if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP))
                 {
-                    this.body.velocity.y = -170;
+                    this.body.velocity.y = -290;
                 }
             }
             else
