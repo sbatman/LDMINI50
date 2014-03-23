@@ -96,20 +96,6 @@
             //if user presses escape go back to the main menu.
             if (this.game.input.keyboard.isDown(Phaser.Keyboard.ESC))
             {
-                var bestScore = 0;
-                if (this.HighScore > this.Score)
-                {
-                    bestScore = this.HighScore;
-                }
-                else
-                {
-                    bestScore = this.Score;
-                }
-
-
-                //save the high score as a cookie
-                document.cookie = "hiScore=" + bestScore + "; expires=Thu, 18 Dec 2099 12:00:00 GMT";
-
                 //reload the page
                 location.reload();
             }
@@ -128,6 +114,9 @@
                 {
                     this.HighScore = this.Score;
                     this.HighScoreText.text = "Best Score:         " + this.HighScore.toFixed(0);
+
+                    //save the high score as a cookie
+                    document.cookie = "hiScore=" + this.HighScore + "; expires=Thu, 18 Dec 2099 12:00:00 GMT";
                 }
                 this.PlayerOrigin = this.player.position.x;
 
