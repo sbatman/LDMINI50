@@ -10,7 +10,9 @@
         ThemeMusic: Phaser.Sound;
         BackgroundCloudGenerator: MINILD50.Clouds;
         ForgroundCloudGenerator: MINILD50.Clouds;
-        myInt: number;
+        Score: number;
+        ScoreText: Phaser.Text;
+        PlayerOrigin: number;
 
 
         preload()
@@ -61,9 +63,17 @@
             this.ForgroundCloudGenerator = new MINILD50.Clouds(this.game, 25, 2, 5);
 
             //create fadeout to mask half height of game
-            this.Fadeout = new Phaser.Sprite(this.game, 0, 500, 'content-graphics-level-fadeOut');
+            this.Fadeout = new Phaser.Sprite(this.game, 0, (window.innerHeight /2) -20, 'content-graphics-level-fadeOut');
             this.Fadeout.fixedToCamera = true;
             this.game.add.existing(this.Fadeout);
+
+            //add score
+            this.Score = 0;
+            this.ScoreText = this.game.add.text(10, 10, this.Score.toString(), { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
+            this.ScoreText.fixedToCamera = true;
+
+            //record player start pos
+            this.PlayerOrigin = this.player.position.x;
         }
 
         create()
@@ -84,6 +94,16 @@
                 this.player.body.velocity.x = 0;
                 this.player.body.velocity.y = 0;
             }
+
+            //update score
+            if (this.player.position.x > this.PlayerOrigin)
+            {
+                this.Score += (this.player.position.x - this.PlayerOrigin) / 100;
+                this.PlayerOrigin = this.player.position.x;
+
+                this.ScoreText.text = this.Score.toFixed(0);
+            }
+
         }
 
         exit()
