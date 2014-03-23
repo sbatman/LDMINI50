@@ -54,10 +54,10 @@
 
             //add score
             this.Score = 0;
-            this.ScoreText = this.game.add.text(10, 40, this.Score.toString(), { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
+            this.ScoreText = this.game.add.text(10, 40,     "Current Score:    " + this.Score.toString(), { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
             this.ScoreText.fixedToCamera = true;
             this.HighScore = 0;
-            this.HighScoreText = this.game.add.text(10, 10, this.HighScore.toString(), { font: "30px Arial", fill: "#00ff00", stroke: '#000000', strokeThickness: 3 });
+            this.HighScoreText = this.game.add.text(10, 10, "Best Score:         " + this.HighScore.toString(), { font: "30px Arial", fill: "#00ff00", stroke: '#000000', strokeThickness: 3 });
             this.HighScoreText.fixedToCamera = true;
 
             //record player start pos
@@ -84,11 +84,11 @@
                 if (this.Score > this.HighScore)
                 {
                     this.HighScore = this.Score;
-                    this.HighScoreText.text = this.HighScore.toFixed(0);
+                    this.HighScoreText.text = "Best Score:         " + this.HighScore.toFixed(0);
                 }
                 this.PlayerOrigin = this.player.position.x;
 
-                this.ScoreText.text = this.Score.toFixed(0);
+                this.ScoreText.text = "Current Score:    " + this.Score.toFixed(0);
 
                
             }
