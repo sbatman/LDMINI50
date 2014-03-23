@@ -9,7 +9,7 @@
         preload()
         {
             //load all images.
-            this.load.image('graphics-character-placeholder', 'Content/Graphics/Character/PlaceHolder.png');
+            
             this.load.image('content-graphics-menu-titleScreen', 'Content/Graphics/Menu/titleScreen.jpg');
             this.load.image('content-graphics-level-fadeOut', 'Content/Graphics/Level/fadeOut.png');
 
