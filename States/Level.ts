@@ -35,7 +35,7 @@
         {
             this.Difficulty = 0;
             //play theme music.
-            this.ThemeMusic = this.add.audio('content-audio-music-gameTheme', 0.5, true);
+            this.ThemeMusic = this.add.audio('content-audio-music-gameTheme', 0.2, true);
             this.ThemeMusic.play();
 
             //create the background and draw it as sky blue.

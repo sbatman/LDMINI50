@@ -18,10 +18,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="app.css" />
-    <Content Include="Content\Audio\Music\gameTheme.mp3" />
-    <Content Include="Content\Audio\Music\titleScreenMusic.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Content\Audio\Music\Track.mp3" />
     <Content Include="Content\Graphics\Character\faithSpriteSheet.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -26,9 +26,8 @@
             for (var i = 1; i <= 2; i++) this.load.image('content-graphics-level-Clouds-'+i, 'Content/Graphics/Level/Clouds/'+i+'.png');
 
 
-            //load all audio
-            this.load.audio('content-audio-music-titleScreenMusic', 'Content/Audio/Music/titleScreenMusic.mp3');
-            this.load.audio('content-audio-music-gameTheme', 'Content/Audio/Music/gameTheme.mp3');
+            //load all audio            
+            this.load.audio('content-audio-music-gameTheme', 'Content/Audio/Music/Track.mp3');
 
             //  Set-up our preloader sprite
             this.preloadBar = this.add.sprite((window.innerWidth / 2) - 200, (window.innerHeight / 2) - 20, 'content-graphics-menu-loadingBar');

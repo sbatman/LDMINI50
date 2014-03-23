@@ -138,15 +138,15 @@ var MINILD50;
             this.body.checkCollision.right = true;
             if (this.body.touching.right) {
                 if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-                    this.body.velocity.y = -140;
+                    this.body.velocity.y = -290;
                     this.body.velocity.x = -this.body.velocity.x;
-                    this.body.velocity.x -= 40;
+                    this.body.velocity.x -= 50;
                 }
             } else if (this.body.touching.left) {
                 if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-                    this.body.velocity.y = -140;
+                    this.body.velocity.y = -290;
                     this.body.velocity.x = -this.body.velocity.x;
-                    this.body.velocity.x += 40;
+                    this.body.velocity.x += 50;
                 }
             }
         };
@@ -183,7 +183,7 @@ var MINILD50;
 
         MenuState.prototype.create = function () {
             //play title music.
-            this.titleMusic = this.add.audio('content-audio-music-titleScreenMusic', 0.05, true);
+            this.titleMusic = this.add.audio('content-audio-music-gameTheme', 0.1, true);
             this.titleMusic.play();
 
             this.background = this.add.sprite(0, 0, 'content-graphics-menu-titleScreen');
@@ -228,11 +228,26 @@ var MINILD50;
         function LevelState() {
             _super.apply(this, arguments);
         }
+        //this method will return the value of a cookie.
+        LevelState.prototype.readCookie = function (name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ')
+                    c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0)
+                    return c.substring(nameEQ.length, c.length);
+            }
+
+            return null;
+        };
+
         LevelState.prototype.preload = function () {
             this.Difficulty = 0;
 
             //play theme music.
-            this.ThemeMusic = this.add.audio('content-audio-music-gameTheme', 0.5, true);
+            this.ThemeMusic = this.add.audio('content-audio-music-gameTheme', 0.2, true);
             this.ThemeMusic.play();
 
             //create the background and draw it as sky blue.
@@ -261,8 +276,16 @@ var MINILD50;
             this.Score = 0;
             this.ScoreText = this.game.add.text(10, 40, "Current Score:    " + this.Score.toString(), { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
             this.ScoreText.fixedToCamera = true;
-            this.HighScore = 0;
-            this.HighScoreText = this.game.add.text(10, 10, "Best Score:         " + this.HighScore.toString(), { font: "30px Arial", fill: "#00ff00", stroke: '#000000', strokeThickness: 3 });
+
+            //check cookie for highscore
+            this.HighScore = parseFloat(this.readCookie('hiScore'));
+
+            //sanity check
+            if (isNaN(this.HighScore)) {
+                this.HighScore = 0;
+            }
+
+            this.HighScoreText = this.game.add.text(10, 10, "Best Score:         " + this.HighScore.toFixed(), { font: "30px Arial", fill: "#00ff00", stroke: '#000000', strokeThickness: 3 });
             this.HighScoreText.fixedToCamera = true;
 
             //record player start pos
@@ -273,6 +296,12 @@ var MINILD50;
         };
 
         LevelState.prototype.update = function () {
+            //if user presses escape go back to the main menu.
+            if (this.game.input.keyboard.isDown(Phaser.Keyboard.ESC)) {
+                //reload the page
+                location.reload();
+            }
+
             this.BackgroundCloudGenerator.update();
             this.ForgroundCloudGenerator.update();
             this.game.physics.arcade.collide(this.player, this.GroupFloor);
@@ -284,6 +313,9 @@ var MINILD50;
                 if (this.Score > this.HighScore) {
                     this.HighScore = this.Score;
                     this.HighScoreText.text = "Best Score:         " + this.HighScore.toFixed(0);
+
+                    //save the high score as a cookie
+                    document.cookie = "hiScore=" + this.HighScore + "; expires=Thu, 18 Dec 2099 12:00:00 GMT";
                 }
                 this.PlayerOrigin = this.player.position.x;
 
@@ -331,13 +363,13 @@ var MINILD50;
             this.Floor = new Array();
             for (var x = 0; x < 120; x++) {
                 var type = this.rnd.integerInRange(1, 3);
-                var newhieght = this.rnd.integerInRange(lasheight - (50 + this.Difficulty), lasheight + (40 + this.Difficulty));
+                var newhieght = this.rnd.integerInRange(lasheight - (55 + this.Difficulty), lasheight + (55 + this.Difficulty));
                 if (newhieght < 350)
                     newhieght = 350;
                 if (newhieght > 500)
                     newhieght = 500;
-                if (newhieght - lasheight > -3 && newhieght - lasheight < 3)
-                    newhieght += 8;
+                if (newhieght - lasheight > -4 && newhieght - lasheight < 4)
+                    newhieght += 12;
                 lasheight = newhieght;
                 var floor = new MINILD50.Floor(this.game, pos, newhieght, this.rnd.integerInRange(1, type == 3 ? 2 : 3), type);
                 this.Floor.push(floor);
@@ -381,11 +413,11 @@ var MINILD50;
             this.load.spritesheet('content-graphics-character-faithSpriteSheet', 'Content/Graphics/Character/faithSpriteSheet.png', 30, 40, 2);
 
             for (var i = 1; i <= 3; i++)
-                this.load.image('graphics-Level-BuildingParts-Roof128-' + i, 'Content/Graphics/Level/BuildingParts/Roof128-' + i + '.png');
+                this.load.image('graphics-Level-BuildingParts-Roof128-' + i, 'Content/Graphics/Level/BuildingParts/Roof128-' + i + '.jpg');
             for (var i = 1; i <= 3; i++)
-                this.load.image('graphics-Level-BuildingParts-Roof256-' + i, 'Content/Graphics/Level/BuildingParts/Roof256-' + i + '.png');
+                this.load.image('graphics-Level-BuildingParts-Roof256-' + i, 'Content/Graphics/Level/BuildingParts/Roof256-' + i + '.jpg');
             for (var i = 1; i <= 2; i++)
-                this.load.image('graphics-Level-BuildingParts-Roof512-' + i, 'Content/Graphics/Level/BuildingParts/Roof512-' + i + '.png');
+                this.load.image('graphics-Level-BuildingParts-Roof512-' + i, 'Content/Graphics/Level/BuildingParts/Roof512-' + i + '.jpg');
             for (var i = 1; i <= 5; i++)
                 this.load.image('graphics-Level-BuildingParts-Top-' + i, 'Content/Graphics/Level/BuildingParts/Top-' + i + '.png');
 
@@ -394,8 +426,7 @@ var MINILD50;
                 this.load.image('content-graphics-level-Clouds-' + i, 'Content/Graphics/Level/Clouds/' + i + '.png');
 
             //load all audio
-            this.load.audio('content-audio-music-titleScreenMusic', 'Content/Audio/Music/titleScreenMusic.mp3');
-            this.load.audio('content-audio-music-gameTheme', 'Content/Audio/Music/gameTheme.mp3');
+            this.load.audio('content-audio-music-gameTheme', 'Content/Audio/Music/Track.mp3');
 
             //  Set-up our preloader sprite
             this.preloadBar = this.add.sprite((window.innerWidth / 2) - 200, (window.innerHeight / 2) - 20, 'content-graphics-menu-loadingBar');
