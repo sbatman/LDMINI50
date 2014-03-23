@@ -41,19 +41,32 @@ var MINILD50;
     var Floor = (function (_super) {
         __extends(Floor, _super);
         function Floor(game, x, y, skin, type) {
+            this.TopParts = new Array();
             var roofsize = "";
+            var PossibleTopBits = 0;
             switch (type) {
                 case 1:
                     roofsize = "128";
+                    PossibleTopBits = 1;
                     break;
                 case 2:
                     roofsize = "256";
+                    PossibleTopBits = 2;
                     break;
                 case 3:
                     roofsize = "512";
+                    PossibleTopBits = 4;
                     break;
             }
             _super.call(this, game, x, y, 'graphics-Level-BuildingParts-Roof' + roofsize + '-' + skin);
+
+            for (var h = 0; h < PossibleTopBits; h++) {
+                if (game.rnd.integerInRange(0, 100) < 75)
+                    continue;
+                var topBit = new Phaser.Sprite(game, x + (128 * h), y - 64, 'graphics-Level-BuildingParts-Top-' + game.rnd.integerInRange(1, 5));
+                game.add.existing(topBit);
+                this.TopParts.push(topBit);
+            }
 
             game.add.existing(this);
             game.physics.arcade.enable(this);
@@ -112,13 +125,13 @@ var MINILD50;
                 if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
                     this.body.velocity.y = -140;
                     this.body.velocity.x = -this.body.velocity.x;
-                    this.body.velocity.x -= 15;
+                    this.body.velocity.x -= 40;
                 }
             } else if (this.body.touching.left) {
                 if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
                     this.body.velocity.y = -140;
                     this.body.velocity.x = -this.body.velocity.x;
-                    this.body.velocity.x += 15;
+                    this.body.velocity.x += 40;
                 }
             }
         };
@@ -252,7 +265,7 @@ var MINILD50;
             this.ForgroundCloudGenerator = new MINILD50.Clouds(this.game, 25, 2, 5);
 
             //create fadeout to mask half height of game
-            this.Fadeout = new Phaser.Sprite(this.game, 0, (window.innerHeight / 2) - 20, 'content-graphics-level-fadeOut');
+            this.Fadeout = new Phaser.Sprite(this.game, 0, 500, 'content-graphics-level-fadeOut');
             this.Fadeout.fixedToCamera = true;
             this.game.add.existing(this.Fadeout);
 
@@ -318,6 +331,9 @@ var MINILD50;
                 this.load.image('graphics-Level-BuildingParts-Roof256-' + i, 'Content/Graphics/Level/BuildingParts/Roof256-' + i + '.png');
             for (var i = 1; i <= 2; i++)
                 this.load.image('graphics-Level-BuildingParts-Roof512-' + i, 'Content/Graphics/Level/BuildingParts/Roof512-' + i + '.png');
+            for (var i = 1; i <= 5; i++)
+                this.load.image('graphics-Level-BuildingParts-Top-' + i, 'Content/Graphics/Level/BuildingParts/Top-' + i + '.png');
+
             this.load.image('content-graphics-level-background', 'Content/Graphics/Level/Background.jpg');
             for (var i = 1; i <= 2; i++)
                 this.load.image('content-graphics-level-Clouds-' + i, 'Content/Graphics/Level/Clouds/' + i + '.png');
