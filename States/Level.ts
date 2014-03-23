@@ -34,7 +34,7 @@
             this.BackgroundCloudGenerator = new MINILD50.Clouds(this.game, 80, -5, 2);
 
             this.player = new Player(this.game, 10, 284);
-            this.game.physics.arcade.gravity.y = 250;
+            this.game.physics.arcade.gravity.y = 450;
                      
 
             //create fadeout to mask half height of game
@@ -141,15 +141,15 @@
             for (var x = 0; x < 120; x++)
             {
                 var type = this.rnd.integerInRange(1, 3);
-                var newhieght = this.rnd.integerInRange(lasheight - (40 + this.Difficulty), lasheight + (40 + this.Difficulty));
+                var newhieght = this.rnd.integerInRange(lasheight - (50 + this.Difficulty), lasheight + (40 + this.Difficulty));
                 if (newhieght < 350) newhieght = 350;
                 if (newhieght > 500) newhieght = 500;
-                if (newhieght == lasheight) newhieght -= 4;
+                if (newhieght - lasheight > -3 && newhieght - lasheight < 3) newhieght += 8;
                 lasheight = newhieght;
                 var floor = new MINILD50.Floor(this.game, pos, newhieght, this.rnd.integerInRange(1, type == 3 ? 2 : 3), type);
                 this.Floor.push(floor);
                 this.GroupFloor.add(floor);
-                pos += this.rnd.integerInRange(x, (x*2) + (this.Difficulty * 60));
+                pos += this.rnd.integerInRange(x+5, (x*2) + (this.Difficulty * 60));
                 switch (type)
                 {
                     case 1: pos += 128; break;
