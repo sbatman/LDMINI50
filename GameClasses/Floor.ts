@@ -32,13 +32,18 @@
                 var topBit = new Phaser.Sprite(game, x + (128 * h), y - 64, 'graphics-Level-BuildingParts-Top-' + game.rnd.integerInRange(1, 5));
                 game.add.existing(topBit);
                 this.TopParts.push(topBit);
+              //  this.addChild(topBit);
             }
 
             game.add.existing(this);
             game.physics.arcade.enable(this);
             this.body.immovable = true;
 
-            (<Phaser.Physics.Arcade.Body>this.body).allowGravity = false;
+            (<Phaser.Physics.Arcade.Body>this.body).allowGravity = false;            
+        }
+        destroy()
+        {
+            for (var i = 0; i < this.TopParts.length; i++) this.TopParts[i].destroy();
         }
     }
 }

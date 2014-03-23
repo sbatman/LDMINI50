@@ -7,10 +7,10 @@ var MINILD50;
         function Clouds(game, count, lowerVariance, upperVariance) {
             this.sprites = new Array();
             for (var i = 0; i < count; i++) {
-                var instance = new Phaser.Sprite(game, -50000, 0, 'content-graphics-level-Clouds-' + ((i % 2) + 1));
+                var instance = new Phaser.Sprite(game, -20000, 0, 'content-graphics-level-Clouds-' + ((i % 2) + 1));
                 game.add.existing(instance);
                 this.sprites.push(instance);
-                instance.position.x = instance.game.rnd.integerInRange(-300, 50000);
+                instance.position.x = instance.game.rnd.integerInRange(-300, 20000);
                 instance.position.y = instance.game.rnd.integerInRange(-100, 320);
                 instance.scale.x = 1 - (0.1 * instance.game.rnd.integerInRange(-lowerVariance, upperVariance));
                 instance.scale.y = instance.scale.x;
@@ -21,7 +21,7 @@ var MINILD50;
             for (var i = 0; i < this.sprites.length; i++) {
                 this.sprites[i].position.x -= this.sprites[i].scale.x;
                 if (this.sprites[i].position.x < -600) {
-                    this.sprites[i].position.x = 10000 + this.sprites[i].game.rnd.integerInRange(0, 200);
+                    this.sprites[i].position.x = 20000 + this.sprites[i].game.rnd.integerInRange(0, 200);
                     this.sprites[i].position.y = this.sprites[i].game.rnd.integerInRange(-50, 320);
                 }
             }
@@ -66,6 +66,7 @@ var MINILD50;
                 var topBit = new Phaser.Sprite(game, x + (128 * h), y - 64, 'graphics-Level-BuildingParts-Top-' + game.rnd.integerInRange(1, 5));
                 game.add.existing(topBit);
                 this.TopParts.push(topBit);
+                //  this.addChild(topBit);
             }
 
             game.add.existing(this);
@@ -74,6 +75,10 @@ var MINILD50;
 
             this.body.allowGravity = false;
         }
+        Floor.prototype.destroy = function () {
+            for (var i = 0; i < this.TopParts.length; i++)
+                this.TopParts[i].destroy();
+        };
         return Floor;
     })(Phaser.Sprite);
     MINILD50.Floor = Floor;
@@ -96,29 +101,31 @@ var MINILD50;
         Player.prototype.PhysicsUpdate = function () {
             this.game.camera.x = this.body.position.x;
 
-            if (this.body.touching.down) {
-                if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-                    this.body.velocity.x -= 5;
-                    this.animations.play('walk');
+            //  if (this.body.touching.down) {
+            if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+                this.body.velocity.x -= 3;
+                this.animations.play('walk');
 
-                    if (this.scale.x == 1)
-                        this.scale.x = -1;
-                } else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-                    this.body.velocity.x += 5;
-                    this.animations.play('walk');
-                    if (this.scale.x == -1)
-                        this.scale.x = 1;
-                } else {
-                    this.animations.frame = 0;
-                    this.body.velocity.x *= 0.6;
-                }
-                if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-                    this.body.velocity.y = -190;
-                }
+                if (this.scale.x == 1)
+                    this.scale.x = -1;
+            } else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+                this.body.velocity.x += 3;
+                this.animations.play('walk');
+                if (this.scale.x == -1)
+                    this.scale.x = 1;
             } else {
-                this.animations.frame = 1;
+                this.animations.frame = 0;
+                this.body.velocity.x *= 0.6;
+            }
+            if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
+                this.body.velocity.y = -170;
             }
 
+            // }
+            //  else
+            //  {
+            //      this.animations.frame = 1;
+            //  }
             this.body.checkCollision.left = true;
             this.body.checkCollision.right = true;
             if (this.body.touching.right) {
@@ -155,6 +162,174 @@ var MINILD50;
         return MainGame;
     })(Phaser.Game);
     MINILD50.MainGame = MainGame;
+})(MINILD50 || (MINILD50 = {}));
+var MINILD50;
+(function (MINILD50) {
+    var BootState = (function (_super) {
+        __extends(BootState, _super);
+        function BootState() {
+            _super.apply(this, arguments);
+        }
+        BootState.prototype.preload = function () {
+            //load the loading bar BEFORE the main loading phase.
+            this.load.image('content-graphics-menu-loadingBar', 'Content/Graphics/Menu/loader.jpg');
+        };
+
+        BootState.prototype.create = function () {
+            this.input.maxPointers = 1;
+            this.stage.disableVisibilityChange = true;
+            this.game.world.width = 20000;
+            this.game.camera.bounds.width = 20000;
+            this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+            this.game.state.start('Preloader', true, false);
+        };
+        return BootState;
+    })(Phaser.State);
+    MINILD50.BootState = BootState;
+})(MINILD50 || (MINILD50 = {}));
+var MINILD50;
+(function (MINILD50) {
+    var LevelState = (function (_super) {
+        __extends(LevelState, _super);
+        function LevelState() {
+            _super.apply(this, arguments);
+        }
+        LevelState.prototype.preload = function () {
+            this.Difficulty = 0;
+
+            //play theme music.
+            this.ThemeMusic = this.add.audio('content-audio-music-gameTheme', 0.5, true);
+            this.ThemeMusic.play();
+
+            //create the background and draw it as sky blue.
+            this.Background = new Phaser.Sprite(this.game, 0, 0, 'content-graphics-level-background');
+            this.Background.fixedToCamera = true;
+            this.game.add.existing(this.Background);
+
+            this.BackgroundCloudGenerator = new MINILD50.Clouds(this.game, 80, -5, 2);
+
+            this.player = new MINILD50.Player(this.game, 10, 284);
+            this.game.physics.arcade.gravity.y = 250;
+
+            //create fadeout to mask half height of game
+            this.Fadeout = new Phaser.Sprite(this.game, 0, 500, 'content-graphics-level-fadeOut');
+            this.Fadeout.fixedToCamera = true;
+            this.game.add.existing(this.Fadeout);
+
+            this.makeWorld();
+
+            this.game.camera.follow(this.player);
+            this.game.camera.deadzone = new Phaser.Rectangle(200, 150, 500, 300);
+
+            this.ForgroundCloudGenerator = new MINILD50.Clouds(this.game, 25, 2, 5);
+
+            //add score
+            this.Score = 0;
+            this.ScoreText = this.game.add.text(10, 40, this.Score.toString(), { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
+            this.ScoreText.fixedToCamera = true;
+            this.HighScore = 0;
+            this.HighScoreText = this.game.add.text(10, 10, this.HighScore.toString(), { font: "30px Arial", fill: "#00ff00", stroke: '#000000', strokeThickness: 3 });
+            this.HighScoreText.fixedToCamera = true;
+
+            //record player start pos
+            this.PlayerOrigin = this.player.position.x;
+        };
+
+        LevelState.prototype.create = function () {
+        };
+
+        LevelState.prototype.update = function () {
+            this.BackgroundCloudGenerator.update();
+            this.ForgroundCloudGenerator.update();
+            this.game.physics.arcade.collide(this.player, this.GroupFloor);
+            this.player.PhysicsUpdate();
+
+            //update score
+            if (this.player.position.x > this.PlayerOrigin) {
+                this.Score += ((this.player.position.x - this.PlayerOrigin) / 100) * (1 + this.Difficulty);
+                if (this.Score > this.HighScore) {
+                    this.HighScore = this.Score;
+                    this.HighScoreText.text = this.HighScore.toFixed(0);
+                }
+                this.PlayerOrigin = this.player.position.x;
+
+                this.ScoreText.text = this.Score.toFixed(0);
+            }
+
+            if (this.player.position.y > 700) {
+                this.player.body.position.x = 30;
+                this.player.body.position.y = 284;
+                this.player.body.velocity.x = 0;
+                this.player.body.velocity.y = 0;
+                this.PlayerOrigin = 0;
+                this.GroupFloor.removeAll();
+                for (var x = 0; x < 120; x++) {
+                    this.Floor[x].destroy();
+                }
+                this.Floor = null;
+                this.GroupFloor = null;
+                this.Difficulty = 0;
+                this.Score = 0;
+                this.makeWorld();
+                this.ScoreText.text = this.Score.toFixed(0);
+            }
+            if (this.player.position.x > 20000) {
+                this.Difficulty++;
+                this.player.body.position.x = 30;
+                this.player.body.position.y = 284;
+                this.player.body.velocity.x = 0;
+                this.player.body.velocity.y = 0;
+                this.PlayerOrigin = 0;
+                this.GroupFloor.removeAll();
+                for (var x = 0; x < 120; x++) {
+                    this.Floor[x].destroy();
+                }
+                this.Floor = null;
+                this.GroupFloor = null;
+                this.makeWorld();
+            }
+        };
+
+        LevelState.prototype.makeWorld = function () {
+            var pos = 0;
+            var lasheight = 360;
+            this.GroupFloor = this.game.add.group();
+            this.Floor = new Array();
+            for (var x = 0; x < 120; x++) {
+                var type = this.rnd.integerInRange(1, 3);
+                var newhieght = this.rnd.integerInRange(lasheight - (40 + this.Difficulty), lasheight + (40 + this.Difficulty));
+                if (newhieght < 350)
+                    newhieght = 350;
+                if (newhieght > 500)
+                    newhieght = 500;
+                if (newhieght == lasheight)
+                    newhieght -= 4;
+                lasheight = newhieght;
+                var floor = new MINILD50.Floor(this.game, pos, newhieght, this.rnd.integerInRange(1, type == 3 ? 2 : 3), type);
+                this.Floor.push(floor);
+                this.GroupFloor.add(floor);
+                pos += this.rnd.integerInRange(x, (x * 2) + (this.Difficulty * 60));
+                switch (type) {
+                    case 1:
+                        pos += 128;
+                        break;
+                    case 2:
+                        pos += 256;
+                        break;
+                    case 3:
+                        pos += 512;
+                        break;
+                }
+            }
+            this.Fadeout.bringToTop();
+        };
+
+        LevelState.prototype.exit = function () {
+            this.player = null;
+        };
+        return LevelState;
+    })(Phaser.State);
+    MINILD50.LevelState = LevelState;
 })(MINILD50 || (MINILD50 = {}));
 var MINILD50;
 (function (MINILD50) {
@@ -205,109 +380,6 @@ var MINILD50;
         return MenuState;
     })(Phaser.State);
     MINILD50.MenuState = MenuState;
-})(MINILD50 || (MINILD50 = {}));
-var MINILD50;
-(function (MINILD50) {
-    var LevelState = (function (_super) {
-        __extends(LevelState, _super);
-        function LevelState() {
-            _super.apply(this, arguments);
-        }
-        LevelState.prototype.preload = function () {
-            //play theme music.
-            this.ThemeMusic = this.add.audio('content-audio-music-gameTheme', 0.5, true);
-            this.ThemeMusic.play();
-
-            //create the background and draw it as sky blue.
-            this.Background = new Phaser.Sprite(this.game, 0, 0, 'content-graphics-level-background');
-            this.Background.fixedToCamera = true;
-            this.game.add.existing(this.Background);
-
-            this.BackgroundCloudGenerator = new MINILD50.Clouds(this.game, 100, -5, 2);
-
-            this.player = new MINILD50.Player(this.game, 10, 284);
-            this.game.physics.arcade.gravity.y = 250;
-            this.GroupFloor = this.game.add.group();
-
-            this.Floor = new Array();
-
-            var pos = 0;
-            var lasheight = 360;
-            for (var x = 0; x < 200; x++) {
-                var type = this.rnd.integerInRange(1, 3);
-                var newhieght = this.rnd.integerInRange(lasheight - 40, lasheight + 40);
-                if (newhieght < 350)
-                    newhieght = 350;
-                if (newhieght > 500)
-                    newhieght = 500;
-                if (newhieght == lasheight)
-                    newhieght -= 4;
-                lasheight = newhieght;
-                var floor = new MINILD50.Floor(this.game, pos, newhieght, this.rnd.integerInRange(1, type == 3 ? 2 : 3), type);
-                this.Floor.push(floor);
-                this.GroupFloor.add(floor);
-                pos += this.rnd.integerInRange(x, x * 3);
-                switch (type) {
-                    case 1:
-                        pos += 128;
-                        break;
-                    case 2:
-                        pos += 256;
-                        break;
-                    case 3:
-                        pos += 512;
-                        break;
-                }
-            }
-            this.game.camera.follow(this.player);
-            this.game.camera.deadzone = new Phaser.Rectangle(200, 150, 500, 300);
-
-            this.ForgroundCloudGenerator = new MINILD50.Clouds(this.game, 25, 2, 5);
-
-            //create fadeout to mask half height of game
-            this.Fadeout = new Phaser.Sprite(this.game, 0, 500, 'content-graphics-level-fadeOut');
-            this.Fadeout.fixedToCamera = true;
-            this.game.add.existing(this.Fadeout);
-
-            //add score
-            this.Score = 0;
-            this.ScoreText = this.game.add.text(10, 10, this.Score.toString(), { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
-            this.ScoreText.fixedToCamera = true;
-
-            //record player start pos
-            this.PlayerOrigin = this.player.position.x;
-        };
-
-        LevelState.prototype.create = function () {
-        };
-
-        LevelState.prototype.update = function () {
-            this.BackgroundCloudGenerator.update();
-            this.ForgroundCloudGenerator.update();
-            this.game.physics.arcade.collide(this.player, this.GroupFloor);
-            this.player.PhysicsUpdate();
-            if (this.player.position.y > 700) {
-                this.player.body.position.x = 30;
-                this.player.body.position.y = 284;
-                this.player.body.velocity.x = 0;
-                this.player.body.velocity.y = 0;
-            }
-
-            //update score
-            if (this.player.position.x > this.PlayerOrigin) {
-                this.Score += (this.player.position.x - this.PlayerOrigin) / 100;
-                this.PlayerOrigin = this.player.position.x;
-
-                this.ScoreText.text = this.Score.toFixed(0);
-            }
-        };
-
-        LevelState.prototype.exit = function () {
-            this.player = null;
-        };
-        return LevelState;
-    })(Phaser.State);
-    MINILD50.LevelState = LevelState;
 })(MINILD50 || (MINILD50 = {}));
 var MINILD50;
 (function (MINILD50) {
@@ -363,29 +435,5 @@ var MINILD50;
         return PreloaderState;
     })(Phaser.State);
     MINILD50.PreloaderState = PreloaderState;
-})(MINILD50 || (MINILD50 = {}));
-var MINILD50;
-(function (MINILD50) {
-    var BootState = (function (_super) {
-        __extends(BootState, _super);
-        function BootState() {
-            _super.apply(this, arguments);
-        }
-        BootState.prototype.preload = function () {
-            //load the loading bar BEFORE the main loading phase.
-            this.load.image('content-graphics-menu-loadingBar', 'Content/Graphics/Menu/loader.jpg');
-        };
-
-        BootState.prototype.create = function () {
-            this.input.maxPointers = 1;
-            this.stage.disableVisibilityChange = true;
-            this.game.world.width = 50000;
-            this.game.camera.bounds.width = 50000;
-            this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-            this.game.state.start('Preloader', true, false);
-        };
-        return BootState;
-    })(Phaser.State);
-    MINILD50.BootState = BootState;
 })(MINILD50 || (MINILD50 = {}));
 //# sourceMappingURL=MainGame.js.map

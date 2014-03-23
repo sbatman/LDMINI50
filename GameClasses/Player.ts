@@ -24,15 +24,15 @@
 
             this.game.camera.x = this.body.position.x;
 
-            if (this.body.touching.down) {
+          //  if (this.body.touching.down) {
                 if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-                    this.body.velocity.x -= 5;
+                    this.body.velocity.x -= 3;
                     this.animations.play('walk');
 
                     if (this.scale.x == 1) this.scale.x = -1;
                 }
                 else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-                    this.body.velocity.x += 5;
+                    this.body.velocity.x += 3;
                     this.animations.play('walk');
                     if (this.scale.x == -1) this.scale.x = 1;
                 }
@@ -41,13 +41,13 @@
                     this.body.velocity.x *= 0.6;
                 }
                 if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-                    this.body.velocity.y = -190;
+                    this.body.velocity.y = -170;
                 }
-            }
-            else
-            {
-                this.animations.frame = 1;
-            }
+           // }
+          //  else
+          //  {
+          //      this.animations.frame = 1;
+          //  }
 
             (<Phaser.Physics.Arcade.Body>this.body).checkCollision.left = true;
             (<Phaser.Physics.Arcade.Body>this.body).checkCollision.right = true;
