@@ -91,7 +91,7 @@ var MINILD50;
             _super.call(this, game, x, y, 'content-graphics-character-faithSpriteSheet', 0);
             this.anchor.setTo(0.5, 0);
 
-            this.animations.add('walk', [0, 1], 10, true);
+            this.animations.add('walk', [0, 1], 5, true);
 
             game.add.existing(this);
             game.physics.arcade.enable(this);
@@ -101,31 +101,39 @@ var MINILD50;
         Player.prototype.PhysicsUpdate = function () {
             this.game.camera.x = this.body.position.x;
 
-            //  if (this.body.touching.down) {
-            if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-                this.body.velocity.x -= 3;
-                this.animations.play('walk');
+            //calculate animation speed.
+            var speed = Math.abs(this.body.velocity.x) / 5;
 
-                if (this.scale.x == 1)
-                    this.scale.x = -1;
-            } else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-                this.body.velocity.x += 3;
-                this.animations.play('walk');
-                if (this.scale.x == -1)
-                    this.scale.x = 1;
+            if (speed < 5)
+                speed = 5;
+            if (speed > 10)
+                speed = 10;
+
+            this.animations.getAnimation('walk').speed = speed;
+
+            if (this.body.touching.down) {
+                if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+                    this.body.velocity.x -= 3;
+                    this.animations.play('walk');
+
+                    if (this.scale.x == 1)
+                        this.scale.x = -1;
+                } else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+                    this.body.velocity.x += 3;
+                    this.animations.play('walk');
+                    if (this.scale.x == -1)
+                        this.scale.x = 1;
+                } else {
+                    this.animations.frame = 0;
+                    this.body.velocity.x *= 0.6;
+                }
+                if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
+                    this.body.velocity.y = -170;
+                }
             } else {
-                this.animations.frame = 0;
-                this.body.velocity.x *= 0.6;
-            }
-            if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-                this.body.velocity.y = -170;
+                this.animations.frame = 1;
             }
 
-            // }
-            //  else
-            //  {
-            //      this.animations.frame = 1;
-            //  }
             this.body.checkCollision.left = true;
             this.body.checkCollision.right = true;
             if (this.body.touching.right) {
@@ -395,7 +403,7 @@ var MINILD50;
             this.load.image('content-graphics-level-fadeOut', 'Content/Graphics/Level/fadeOut.png');
 
             //load spritesheets
-            this.load.spritesheet('content-graphics-character-faithSpriteSheet', 'Content/Graphics/Character/faithSpriteSheet.png', 64, 64, 2);
+            this.load.spritesheet('content-graphics-character-faithSpriteSheet', 'Content/Graphics/Character/faithSpriteSheet.png', 30, 40, 2);
 
             for (var i = 1; i <= 3; i++)
                 this.load.image('graphics-Level-BuildingParts-Roof128-' + i, 'Content/Graphics/Level/BuildingParts/Roof128-' + i + '.png');
