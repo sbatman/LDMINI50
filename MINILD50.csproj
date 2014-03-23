@@ -28,20 +28,14 @@
     <Content Include="Content\Graphics\Level\Background.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\Level\BuildingParts\Roof128-1.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Graphics\Level\BuildingParts\Roof128-2.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Graphics\Level\BuildingParts\Roof128-3.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Graphics\Level\BuildingParts\Roof256-1.png" />
-    <Content Include="Content\Graphics\Level\BuildingParts\Roof256-2.png" />
-    <Content Include="Content\Graphics\Level\BuildingParts\Roof256-3.png" />
-    <Content Include="Content\Graphics\Level\BuildingParts\Roof512-1.png" />
-    <Content Include="Content\Graphics\Level\BuildingParts\Roof512-2.png" />
+    <Content Include="Content\Graphics\Level\BuildingParts\Roof128-1.jpg" />
+    <Content Include="Content\Graphics\Level\BuildingParts\Roof128-2.jpg" />
+    <Content Include="Content\Graphics\Level\BuildingParts\Roof128-3.jpg" />
+    <Content Include="Content\Graphics\Level\BuildingParts\Roof256-1.jpg" />
+    <Content Include="Content\Graphics\Level\BuildingParts\Roof256-2.jpg" />
+    <Content Include="Content\Graphics\Level\BuildingParts\Roof256-3.jpg" />
+    <Content Include="Content\Graphics\Level\BuildingParts\Roof512-1.jpg" />
+    <Content Include="Content\Graphics\Level\BuildingParts\Roof512-2.jpg" />
     <Content Include="Content\Graphics\Level\BuildingParts\Top-1.png" />
     <Content Include="Content\Graphics\Level\BuildingParts\Top-2.png" />
     <Content Include="Content\Graphics\Level\BuildingParts\Top-3.png" />

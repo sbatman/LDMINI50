@@ -25,7 +25,6 @@
             this.ThemeMusic = this.add.audio('content-audio-music-gameTheme', 0.5, true);
             this.ThemeMusic.play();
 
-
             //create the background and draw it as sky blue.
             this.Background = new Phaser.Sprite(this.game, 0, 0, 'content-graphics-level-background');
             this.Background.fixedToCamera = true;
@@ -35,7 +34,7 @@
 
             this.player = new Player(this.game, 10, 284);
             this.game.physics.arcade.gravity.y = 450;
-                     
+
 
             //create fadeout to mask half height of game
             this.Fadeout = new Phaser.Sprite(this.game, 0, 500, 'content-graphics-level-fadeOut');
@@ -45,7 +44,7 @@
 
             this.makeWorld();
 
-          
+
             this.game.camera.follow(this.player);
             this.game.camera.deadzone = new Phaser.Rectangle(200, 150, 500, 300);
 
@@ -54,7 +53,7 @@
 
             //add score
             this.Score = 0;
-            this.ScoreText = this.game.add.text(10, 40,     "Current Score:    " + this.Score.toString(), { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
+            this.ScoreText = this.game.add.text(10, 40, "Current Score:    " + this.Score.toString(), { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
             this.ScoreText.fixedToCamera = true;
             this.HighScore = 0;
             this.HighScoreText = this.game.add.text(10, 10, "Best Score:         " + this.HighScore.toString(), { font: "30px Arial", fill: "#00ff00", stroke: '#000000', strokeThickness: 3 });
@@ -90,7 +89,7 @@
 
                 this.ScoreText.text = "Current Score:    " + this.Score.toFixed(0);
 
-               
+
             }
 
             if (this.player.position.y > 700)
@@ -109,7 +108,7 @@
                 this.GroupFloor = null;
                 this.Difficulty = 0;
                 this.Score = 0;
-                this.makeWorld();  
+                this.makeWorld();
                 this.ScoreText.text = this.Score.toFixed(0);
             }
             if (this.player.position.x > 20000)
@@ -122,7 +121,7 @@
                 this.PlayerOrigin = 0;
                 this.GroupFloor.removeAll();
                 for (var x = 0; x < 120; x++)
-                {                    
+                {
                     this.Floor[x].destroy();
                 }
                 this.Floor = null;
@@ -136,7 +135,7 @@
 
             var pos = 0;
             var lasheight = 360;
-            this.GroupFloor = this.game.add.group();  
+            this.GroupFloor = this.game.add.group();
             this.Floor = new Array<MINILD50.Floor>();
             for (var x = 0; x < 120; x++)
             {
@@ -149,7 +148,7 @@
                 var floor = new MINILD50.Floor(this.game, pos, newhieght, this.rnd.integerInRange(1, type == 3 ? 2 : 3), type);
                 this.Floor.push(floor);
                 this.GroupFloor.add(floor);
-                pos += this.rnd.integerInRange(x+5, (x*2) + (this.Difficulty * 60));
+                pos += this.rnd.integerInRange(x + 5, (x * 2) + (this.Difficulty * 60));
                 switch (type)
                 {
                     case 1: pos += 128; break;
