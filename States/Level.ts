@@ -6,8 +6,10 @@
         Floor: Array<MINILD50.Floor>;
         GroupFloor: Phaser.Group;
         Background: Phaser.Sprite;
+        Fadeout: Phaser.Sprite;
         ThemeMusic: Phaser.Sound;
         CloudGenerator: MINILD50.Clouds;
+
 
         preload()
         {
@@ -20,7 +22,6 @@
             this.Background = new Phaser.Sprite(this.game,0,0,'content-graphics-level-background');
             this.Background.fixedToCamera = true;
             this.game.add.existing(this.Background);
-
 
             this.CloudGenerator = new MINILD50.Clouds(this.game);
 
@@ -53,6 +54,10 @@
             this.game.camera.follow(this.player);
             this.game.camera.deadzone = new Phaser.Rectangle(200, 150, 500, 300);
 
+            //create fadeout to mask half height of game
+            this.Fadeout = new Phaser.Sprite(this.game, 0, (window.innerHeight/2) - 220, 'content-graphics-level-fadeOut');
+            this.Fadeout.fixedToCamera = true;
+            this.game.add.existing(this.Fadeout);
         }
 
         create()

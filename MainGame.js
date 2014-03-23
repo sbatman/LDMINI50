@@ -105,7 +105,7 @@ var MINILD50;
     var MainGame = (function (_super) {
         __extends(MainGame, _super);
         function MainGame() {
-            _super.call(this, window.innerWidth, 600, Phaser.AUTO, 'content', null);
+            _super.call(this, window.innerWidth, window.innerHeight, Phaser.AUTO, 'content', null);
             this.state.add('Boot', MINILD50.BootState, false);
             this.state.add('Preloader', MINILD50.PreloaderState, false);
             this.state.add('MainMenu', MINILD50.MenuState, false);
@@ -192,6 +192,11 @@ var MINILD50;
             }
             this.game.camera.follow(this.player);
             this.game.camera.deadzone = new Phaser.Rectangle(200, 150, 500, 300);
+
+            //create fadeout to mask half height of game
+            this.Fadeout = new Phaser.Sprite(this.game, 0, (window.innerHeight / 2) - 220, 'content-graphics-level-fadeOut');
+            this.Fadeout.fixedToCamera = true;
+            this.game.add.existing(this.Fadeout);
         };
 
         LevelState.prototype.create = function () {
@@ -277,6 +282,7 @@ var MINILD50;
             //load all images.
             this.load.image('graphics-character-placeholder', 'Content/Graphics/Character/PlaceHolder.png');
             this.load.image('content-graphics-menu-titleScreen', 'Content/Graphics/Menu/titleScreen.jpg');
+            this.load.image('content-graphics-level-fadeOut', 'Content/Graphics/Level/fadeOut.png');
 
             for (var i = 1; i <= 3; i++)
                 this.load.image('graphics-Level-BuildingParts-Roof128-' + i, 'Content/Graphics/Level/BuildingParts/Roof128-' + i + '.png');

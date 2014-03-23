@@ -11,6 +11,8 @@
             //load all images.
             this.load.image('graphics-character-placeholder', 'Content/Graphics/Character/PlaceHolder.png');
             this.load.image('content-graphics-menu-titleScreen', 'Content/Graphics/Menu/titleScreen.jpg');
+            this.load.image('content-graphics-level-fadeOut', 'Content/Graphics/Level/fadeOut.png');
+
             //Loading Buildings
             for (var i = 1; i <= 3; i++) this.load.image('graphics-Level-BuildingParts-Roof128-' + i, 'Content/Graphics/Level/BuildingParts/Roof128-' + i + '.png');
             for (var i = 1; i <= 3; i++) this.load.image('graphics-Level-BuildingParts-Roof256-' + i, 'Content/Graphics/Level/BuildingParts/Roof256-' + i + '.png');
