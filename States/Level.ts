@@ -33,6 +33,22 @@
 
         preload()
         {
+            //make sure score is saved every time player unloads.
+            window.onunload = () =>
+            {
+                var bestScore = 0;
+                if (this.HighScore > this.Score) {
+                    bestScore = this.HighScore;
+                }
+                else {
+                    bestScore = this.Score;
+                }
+
+
+                //save the high score as a cookie
+                document.cookie = "hiScore=" + bestScore + "; expires=Thu, 18 Dec 2099 12:00:00 GMT";
+            };
+
             this.Difficulty = 0;
             //play theme music.
             this.ThemeMusic = this.add.audio('content-audio-music-gameTheme', 0.5, true);
@@ -95,22 +111,7 @@
         {
             //if user presses escape go back to the main menu.
             if (this.game.input.keyboard.isDown(Phaser.Keyboard.ESC))
-            {
-                var bestScore = 0;
-                if (this.HighScore > this.Score)
-                {
-                    bestScore = this.HighScore;
-                }
-                else
-                {
-                    bestScore = this.Score;
-                }
-
-
-                //save the high score as a cookie
-                document.cookie = "hiScore=" + bestScore + "; expires=Thu, 18 Dec 2099 12:00:00 GMT";
-
-                //reload the page
+            {     
                 location.reload();
             }
 
@@ -201,11 +202,6 @@
                 }
             }
             this.Fadeout.bringToTop();
-        }
-
-        exit()
-        {
-            this.player = null;
-        }
+        }         
     }
 }
