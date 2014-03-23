@@ -141,10 +141,10 @@
             for (var x = 0; x < 120; x++)
             {
                 var type = this.rnd.integerInRange(1, 3);
-                var newhieght = this.rnd.integerInRange(lasheight - (50 + this.Difficulty), lasheight + (40 + this.Difficulty));
+                var newhieght = this.rnd.integerInRange(lasheight - (55 + this.Difficulty), lasheight + (55 + this.Difficulty));
                 if (newhieght < 350) newhieght = 350;
                 if (newhieght > 500) newhieght = 500;
-                if (newhieght - lasheight > -3 && newhieght - lasheight < 3) newhieght += 8;
+                if (newhieght - lasheight > -4 && newhieght - lasheight < 4) newhieght += 12;
                 lasheight = newhieght;
                 var floor = new MINILD50.Floor(this.game, pos, newhieght, this.rnd.integerInRange(1, type == 3 ? 2 : 3), type);
                 this.Floor.push(floor);
