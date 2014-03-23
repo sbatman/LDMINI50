@@ -67,18 +67,18 @@
             {
                 if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP))
                 {
-                    this.body.velocity.y = -140;
+                    this.body.velocity.y = -290;
                     this.body.velocity.x = -this.body.velocity.x;
-                    this.body.velocity.x -= 40;
+                    this.body.velocity.x -= 50;
                 }
             }
             else if (this.body.touching.left)
             {
                 if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP))
                 {
-                    this.body.velocity.y = -140;
+                    this.body.velocity.y = -290;
                     this.body.velocity.x = -this.body.velocity.x;
-                    this.body.velocity.x += 40;
+                    this.body.velocity.x += 50;
                 }
             }
         }
