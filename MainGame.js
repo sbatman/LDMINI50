@@ -70,8 +70,11 @@ var MINILD50;
     var Player = (function (_super) {
         __extends(Player, _super);
         function Player(game, x, y) {
-            _super.call(this, game, x, y, 'graphics-character-placeholder');
+            _super.call(this, game, x, y, 'content-graphics-character-faithSpriteSheet', 0);
             this.anchor.setTo(0.5, 0);
+
+            this.animations.add('walk', [0, 1], 10, true);
+
             game.add.existing(this);
             game.physics.arcade.enable(this);
             this.body.bounce.y = 0.1;
@@ -79,22 +82,30 @@ var MINILD50;
         }
         Player.prototype.PhysicsUpdate = function () {
             this.game.camera.x = this.body.position.x;
+
             if (this.body.touching.down) {
                 if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
                     this.body.velocity.x -= 5;
+                    this.animations.play('walk');
+
                     if (this.scale.x == 1)
                         this.scale.x = -1;
                 } else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
                     this.body.velocity.x += 5;
+                    this.animations.play('walk');
                     if (this.scale.x == -1)
                         this.scale.x = 1;
                 } else {
+                    this.animations.frame = 0;
                     this.body.velocity.x *= 0.6;
                 }
                 if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
                     this.body.velocity.y = -190;
                 }
+            } else {
+                this.animations.frame = 1;
             }
+
             this.body.checkCollision.left = true;
             this.body.checkCollision.right = true;
             if (this.body.touching.right) {
@@ -241,9 +252,17 @@ var MINILD50;
             this.ForgroundCloudGenerator = new MINILD50.Clouds(this.game, 25, 2, 5);
 
             //create fadeout to mask half height of game
-            this.Fadeout = new Phaser.Sprite(this.game, 0, 500, 'content-graphics-level-fadeOut');
+            this.Fadeout = new Phaser.Sprite(this.game, 0, (window.innerHeight / 2) - 20, 'content-graphics-level-fadeOut');
             this.Fadeout.fixedToCamera = true;
             this.game.add.existing(this.Fadeout);
+
+            //add score
+            this.Score = 0;
+            this.ScoreText = this.game.add.text(10, 10, this.Score.toString(), { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
+            this.ScoreText.fixedToCamera = true;
+
+            //record player start pos
+            this.PlayerOrigin = this.player.position.x;
         };
 
         LevelState.prototype.create = function () {
@@ -259,6 +278,14 @@ var MINILD50;
                 this.player.body.position.y = 284;
                 this.player.body.velocity.x = 0;
                 this.player.body.velocity.y = 0;
+            }
+
+            //update score
+            if (this.player.position.x > this.PlayerOrigin) {
+                this.Score += (this.player.position.x - this.PlayerOrigin) / 100;
+                this.PlayerOrigin = this.player.position.x;
+
+                this.ScoreText.text = this.Score.toFixed(0);
             }
         };
 
@@ -281,6 +308,9 @@ var MINILD50;
             this.load.image('graphics-character-placeholder', 'Content/Graphics/Character/PlaceHolder.png');
             this.load.image('content-graphics-menu-titleScreen', 'Content/Graphics/Menu/titleScreen.jpg');
             this.load.image('content-graphics-level-fadeOut', 'Content/Graphics/Level/fadeOut.png');
+
+            //load spritesheets
+            this.load.spritesheet('content-graphics-character-faithSpriteSheet', 'Content/Graphics/Character/faithSpriteSheet.png', 64, 64, 2);
 
             for (var i = 1; i <= 3; i++)
                 this.load.image('graphics-Level-BuildingParts-Roof128-' + i, 'Content/Graphics/Level/BuildingParts/Roof128-' + i + '.png');

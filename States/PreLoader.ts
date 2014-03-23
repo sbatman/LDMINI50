@@ -13,6 +13,9 @@
             this.load.image('content-graphics-menu-titleScreen', 'Content/Graphics/Menu/titleScreen.jpg');
             this.load.image('content-graphics-level-fadeOut', 'Content/Graphics/Level/fadeOut.png');
 
+            //load spritesheets
+            this.load.spritesheet('content-graphics-character-faithSpriteSheet', 'Content/Graphics/Character/faithSpriteSheet.png', 64, 64, 2);
+
             //Loading Buildings
             for (var i = 1; i <= 3; i++) this.load.image('graphics-Level-BuildingParts-Roof128-' + i, 'Content/Graphics/Level/BuildingParts/Roof128-' + i + '.png');
             for (var i = 1; i <= 3; i++) this.load.image('graphics-Level-BuildingParts-Roof256-' + i, 'Content/Graphics/Level/BuildingParts/Roof256-' + i + '.png');
