@@ -74,7 +74,10 @@
             this.HighScore = parseFloat(this.readCookie('hiScore'));
 
             //sanity check
-            if (this.HighScore === NaN) this.HighScore = 0;
+            if (isNaN(this.HighScore))
+            {
+                this.HighScore = 0;
+            }
              
             this.HighScoreText = this.game.add.text(10, 10, "Best Score:         " + this.HighScore.toFixed(), { font: "30px Arial", fill: "#00ff00", stroke: '#000000', strokeThickness: 3 });
             this.HighScoreText.fixedToCamera = true;
@@ -93,8 +96,19 @@
             //if user presses escape go back to the main menu.
             if (this.game.input.keyboard.isDown(Phaser.Keyboard.ESC))
             {
+                var bestScore = 0;
+                if (this.HighScore > this.Score)
+                {
+                    bestScore = this.HighScore;
+                }
+                else
+                {
+                    bestScore = this.Score;
+                }
+
+
                 //save the high score as a cookie
-                document.cookie = "hiScore=" + this.HighScore + "; expires=Thu, 18 Dec 2099 12:00:00 GMT";
+                document.cookie = "hiScore=" + bestScore + "; expires=Thu, 18 Dec 2099 12:00:00 GMT";
 
                 //reload the page
                 location.reload();
