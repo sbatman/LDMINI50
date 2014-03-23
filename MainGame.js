@@ -183,7 +183,7 @@ var MINILD50;
 
         MenuState.prototype.create = function () {
             //play title music.
-            this.titleMusic = this.add.audio('content-audio-music-gameTheme', 0.1, true);
+            this.titleMusic = this.add.audio('content-audio-music-menuTheme', 0.1, true);
             this.titleMusic.play();
 
             this.background = this.add.sprite(0, 0, 'content-graphics-menu-titleScreen');
@@ -427,6 +427,7 @@ var MINILD50;
 
             //load all audio
             this.load.audio('content-audio-music-gameTheme', 'Content/Audio/Music/Track.mp3');
+            this.load.audio('content-audio-music-menuTheme', 'Content/Audio/Music/MenuTrack.mp3');
 
             //  Set-up our preloader sprite
             this.preloadBar = this.add.sprite((window.innerWidth / 2) - 200, (window.innerHeight / 2) - 20, 'content-graphics-menu-loadingBar');
@@ -474,4 +475,3 @@ var MINILD50;
     })(Phaser.State);
     MINILD50.BootState = BootState;
 })(MINILD50 || (MINILD50 = {}));
-//# sourceMappingURL=MainGame.js.map

@@ -18,6 +18,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="app.css" />
+    <Content Include="Content\Audio\Music\MenuTrack.mp3" />
     <Content Include="Content\Audio\Music\Track.mp3" />
     <Content Include="Content\Graphics\Character\faithSpriteSheet.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
