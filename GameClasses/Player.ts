@@ -9,7 +9,7 @@
             super(game, x, y, 'content-graphics-character-faithSpriteSheet', 0);
             this.anchor.setTo(0.5, 0);
 
-            this.animations.add('walk', [0,1], 10, true);
+            this.animations.add('walk', [0,1], 5, true);
             
 
             game.add.existing(this);
@@ -20,9 +20,16 @@
 
         PhysicsUpdate()
         {
-
-
             this.game.camera.x = this.body.position.x;
+
+            //calculate animation speed.
+            var speed = Math.abs(this.body.velocity.x) / 5;
+
+            if (speed < 5) speed = 5;
+            if (speed > 10) speed = 10;
+
+            this.animations.getAnimation('walk').speed = speed;
+
 
             if (this.body.touching.down) {
                 if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {

@@ -22,7 +22,9 @@
     <Content Include="Content\Audio\Music\titleScreenMusic.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\Character\faithSpriteSheet.png" />
+    <Content Include="Content\Graphics\Character\faithSpriteSheet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Graphics\Character\PlaceHolder.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
