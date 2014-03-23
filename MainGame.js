@@ -120,7 +120,7 @@ var MINILD50;
     var MainGame = (function (_super) {
         __extends(MainGame, _super);
         function MainGame() {
-            _super.call(this, window.innerWidth, 600, Phaser.AUTO, 'content', null);
+            _super.call(this, window.innerWidth, window.innerHeight, Phaser.AUTO, 'content', null);
             this.state.add('Boot', MINILD50.BootState, false);
             this.state.add('Preloader', MINILD50.PreloaderState, false);
             this.state.add('MainMenu', MINILD50.MenuState, false);
@@ -134,27 +134,53 @@ var MINILD50;
 })(MINILD50 || (MINILD50 = {}));
 var MINILD50;
 (function (MINILD50) {
-    var BootState = (function (_super) {
-        __extends(BootState, _super);
-        function BootState() {
+    var MenuState = (function (_super) {
+        __extends(MenuState, _super);
+        function MenuState() {
             _super.apply(this, arguments);
         }
-        BootState.prototype.preload = function () {
-            //load the loading bar BEFORE the main loading phase.
-            this.load.image('content-graphics-menu-loadingBar', 'Content/Graphics/Menu/loader.jpg');
+        MenuState.prototype.preload = function () {
         };
 
-        BootState.prototype.create = function () {
-            this.input.maxPointers = 1;
-            this.stage.disableVisibilityChange = true;
-            this.game.world.width = 50000;
-            this.game.camera.bounds.width = 50000;
-            this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-            this.game.state.start('Preloader', true, false);
+        MenuState.prototype.create = function () {
+            //play title music.
+            this.titleMusic = this.add.audio('content-audio-music-titleScreenMusic', 0.05, true);
+            this.titleMusic.play();
+
+            this.background = this.add.sprite(0, 0, 'content-graphics-menu-titleScreen');
+            this.background.alpha = 0;
+            this.background.width = window.innerWidth;
+            this.background.height = window.innerHeight;
+
+            this.prompt = this.game.add.text((window.innerWidth / 2) - 90, window.innerHeight / 2, "Click to Start", { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
+            this.prompt.alpha = 0;
+
+            //add animations
+            this.add.tween(this.background).to({ alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
+            this.add.tween(this.prompt).to({ alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
+
+            //put event handler on user input to load the game fully when the user clicks a button.
+            this.input.onDown.addOnce(this.fadeOut, this);
         };
-        return BootState;
+
+        //when user provides input, fade the menu screen out and load the first level.
+        MenuState.prototype.fadeOut = function () {
+            this.add.tween(this.prompt).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+            var tween = this.add.tween(this.background).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+
+            tween.onComplete.add(this.startGame, this);
+        };
+
+        //load the first level
+        MenuState.prototype.startGame = function () {
+            this.game.state.start('Level', true, false);
+
+            //stop music
+            this.titleMusic.stop();
+        };
+        return MenuState;
     })(Phaser.State);
-    MINILD50.BootState = BootState;
+    MINILD50.MenuState = MenuState;
 })(MINILD50 || (MINILD50 = {}));
 var MINILD50;
 (function (MINILD50) {
@@ -213,6 +239,11 @@ var MINILD50;
             this.game.camera.deadzone = new Phaser.Rectangle(200, 150, 500, 300);
 
             this.ForgroundCloudGenerator = new MINILD50.Clouds(this.game, 25, 2, 5);
+
+            //create fadeout to mask half height of game
+            this.Fadeout = new Phaser.Sprite(this.game, 0, 500, 'content-graphics-level-fadeOut');
+            this.Fadeout.fixedToCamera = true;
+            this.game.add.existing(this.Fadeout);
         };
 
         LevelState.prototype.create = function () {
@@ -240,56 +271,6 @@ var MINILD50;
 })(MINILD50 || (MINILD50 = {}));
 var MINILD50;
 (function (MINILD50) {
-    var MenuState = (function (_super) {
-        __extends(MenuState, _super);
-        function MenuState() {
-            _super.apply(this, arguments);
-        }
-        MenuState.prototype.preload = function () {
-        };
-
-        MenuState.prototype.create = function () {
-            //play title music.
-            this.titleMusic = this.add.audio('content-audio-music-titleScreenMusic', 0.05, true);
-            this.titleMusic.play();
-
-            this.background = this.add.sprite(0, 0, 'content-graphics-menu-titleScreen');
-            this.background.alpha = 0;
-            this.background.width = window.innerWidth;
-            this.background.height = window.innerHeight;
-
-            this.prompt = this.game.add.text((window.innerWidth / 2) - 90, window.innerHeight / 2, "Click to Start", { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
-            this.prompt.alpha = 0;
-
-            //add animations
-            this.add.tween(this.background).to({ alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
-            this.add.tween(this.prompt).to({ alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
-
-            //put event handler on user input to load the game fully when the user clicks a button.
-            this.input.onDown.addOnce(this.fadeOut, this);
-        };
-
-        //when user provides input, fade the menu screen out and load the first level.
-        MenuState.prototype.fadeOut = function () {
-            this.add.tween(this.prompt).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
-            var tween = this.add.tween(this.background).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
-
-            tween.onComplete.add(this.startGame, this);
-        };
-
-        //load the first level
-        MenuState.prototype.startGame = function () {
-            this.game.state.start('Level', true, false);
-
-            //stop music
-            this.titleMusic.stop();
-        };
-        return MenuState;
-    })(Phaser.State);
-    MINILD50.MenuState = MenuState;
-})(MINILD50 || (MINILD50 = {}));
-var MINILD50;
-(function (MINILD50) {
     var PreloaderState = (function (_super) {
         __extends(PreloaderState, _super);
         function PreloaderState() {
@@ -299,6 +280,7 @@ var MINILD50;
             //load all images.
             this.load.image('graphics-character-placeholder', 'Content/Graphics/Character/PlaceHolder.png');
             this.load.image('content-graphics-menu-titleScreen', 'Content/Graphics/Menu/titleScreen.jpg');
+            this.load.image('content-graphics-level-fadeOut', 'Content/Graphics/Level/fadeOut.png');
 
             for (var i = 1; i <= 3; i++)
                 this.load.image('graphics-Level-BuildingParts-Roof128-' + i, 'Content/Graphics/Level/BuildingParts/Roof128-' + i + '.png');
@@ -335,5 +317,29 @@ var MINILD50;
         return PreloaderState;
     })(Phaser.State);
     MINILD50.PreloaderState = PreloaderState;
+})(MINILD50 || (MINILD50 = {}));
+var MINILD50;
+(function (MINILD50) {
+    var BootState = (function (_super) {
+        __extends(BootState, _super);
+        function BootState() {
+            _super.apply(this, arguments);
+        }
+        BootState.prototype.preload = function () {
+            //load the loading bar BEFORE the main loading phase.
+            this.load.image('content-graphics-menu-loadingBar', 'Content/Graphics/Menu/loader.jpg');
+        };
+
+        BootState.prototype.create = function () {
+            this.input.maxPointers = 1;
+            this.stage.disableVisibilityChange = true;
+            this.game.world.width = 50000;
+            this.game.camera.bounds.width = 50000;
+            this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+            this.game.state.start('Preloader', true, false);
+        };
+        return BootState;
+    })(Phaser.State);
+    MINILD50.BootState = BootState;
 })(MINILD50 || (MINILD50 = {}));
 //# sourceMappingURL=MainGame.js.map

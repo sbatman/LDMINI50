@@ -6,10 +6,12 @@
         Floor: Array<MINILD50.Floor>;
         GroupFloor: Phaser.Group;
         Background: Phaser.Sprite;
+        Fadeout: Phaser.Sprite;
         ThemeMusic: Phaser.Sound;
         BackgroundCloudGenerator: MINILD50.Clouds;
         ForgroundCloudGenerator: MINILD50.Clouds;
         myInt: number;
+
 
         preload()
         {
@@ -22,7 +24,6 @@
             this.Background = new Phaser.Sprite(this.game,0,0,'content-graphics-level-background');
             this.Background.fixedToCamera = true;
             this.game.add.existing(this.Background);
-
 
             this.BackgroundCloudGenerator = new MINILD50.Clouds(this.game,100,-5,2);
 
@@ -59,6 +60,10 @@
 
             this.ForgroundCloudGenerator = new MINILD50.Clouds(this.game, 25, 2, 5);
 
+            //create fadeout to mask half height of game
+            this.Fadeout = new Phaser.Sprite(this.game, 0, 500, 'content-graphics-level-fadeOut');
+            this.Fadeout.fixedToCamera = true;
+            this.game.add.existing(this.Fadeout);
         }
 
         create()
