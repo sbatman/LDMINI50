@@ -39,6 +39,25 @@
                     this.body.velocity.y = -190;
                 }
             }
+            (<Phaser.Physics.Arcade.Body>this.body).checkCollision.left = true;
+            (<Phaser.Physics.Arcade.Body>this.body).checkCollision.right = true;
+            if (this.body.touching.right)
+            {
+                if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP))
+                {
+                    this.body.velocity.y = -140;
+                    this.body.velocity.x = -this.body.velocity.x;
+                    this.body.velocity.x -= 15;
+                }
+            } else if (this.body.touching.left)
+            {
+                if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP))
+                {
+                    this.body.velocity.y = -140;
+                    this.body.velocity.x = -this.body.velocity.x;
+                    this.body.velocity.x += 15;
+                }
+            }
         }
     }
 }

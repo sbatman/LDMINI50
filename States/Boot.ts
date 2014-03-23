@@ -13,8 +13,8 @@
         {
             this.input.maxPointers = 1;
             this.stage.disableVisibilityChange = true;
-            this.game.world.width = 10000;
-            this.game.camera.bounds.width = 10000;
+            this.game.world.width = 50000;
+            this.game.camera.bounds.width = 50000;
             this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
             this.game.state.start('Preloader', true, false);
 

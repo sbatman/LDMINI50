@@ -43,13 +43,11 @@
     <Content Include="Content\Graphics\Level\BuildingParts\Roof512-1.png" />
     <Content Include="Content\Graphics\Level\BuildingParts\Roof512-2.png" />
     <Content Include="Content\Graphics\Level\Clouds\1.png" />
-    <Content Include="Content\Graphics\Level\Clouds\2.png" />
-    <Content Include="Content\Graphics\Level\fadeOut.png">
+    <Content Include="Content\Graphics\Level\Clouds\2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Graphics\Menu\loader.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Content\Graphics\Level\fadeOut.png" />
+    <Content Include="Content\Graphics\Menu\loader.jpg" />
     <Content Include="Content\Graphics\Menu\loadingBar.jpg" />
     <Content Include="Content\Graphics\Menu\titleScreen.jpg" />
     <Content Include="index.html" />
