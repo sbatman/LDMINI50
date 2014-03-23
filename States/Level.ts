@@ -9,10 +9,16 @@
         Fadeout: Phaser.Sprite;
         ThemeMusic: Phaser.Sound;
         CloudGenerator: MINILD50.Clouds;
+        ScoreText: Phaser.Text;
+        Score: number;
+        PlayerOrigin: number;
 
 
         preload()
         {
+            //set score to 0
+            this.Score = 0;
+
             //play theme music.
             this.ThemeMusic = this.add.audio('content-audio-music-gameTheme', 0.5, true);
             this.ThemeMusic.play();
@@ -54,6 +60,13 @@
             this.game.camera.follow(this.player);
             this.game.camera.deadzone = new Phaser.Rectangle(200, 150, 500, 300);
 
+            //add score
+            this.ScoreText = this.game.add.text(10, 10, this.Score.toString(), { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
+            this.ScoreText.fixedToCamera = true;
+
+            //record previous player pos
+            this.PlayerOrigin = this.player.position.x;
+
             //create fadeout to mask half height of game
             this.Fadeout = new Phaser.Sprite(this.game, 0, (window.innerHeight/2) - 220, 'content-graphics-level-fadeOut');
             this.Fadeout.fixedToCamera = true;
@@ -77,6 +90,17 @@
                 this.player.body.velocity.x = 0;
                 this.player.body.velocity.y = 0;
             }
+
+            //calculate score
+            if (this.player.position.x > this.PlayerOrigin)
+            {
+                this.Score += this.player.position.x - this.PlayerOrigin;
+                this.PlayerOrigin = this.player.position.x;
+            }
+
+            //print score
+            this.ScoreText.text = this.Score.toPrecision(1);
+
         }
 
         exit()
