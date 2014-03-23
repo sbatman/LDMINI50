@@ -17,6 +17,19 @@
         PlayerOrigin: number;
         Difficulty: number;
 
+        //this method will return the value of a cookie.
+        readCookie(name :string)
+        {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+        }
+
+        return null;
+        }
 
         preload()
         {
@@ -55,8 +68,15 @@
             this.Score = 0;
             this.ScoreText = this.game.add.text(10, 40, "Current Score:    " + this.Score.toString(), { font: "30px Arial", fill: "#ff0000", stroke: '#000000', strokeThickness: 3 });
             this.ScoreText.fixedToCamera = true;
-            this.HighScore = 0;
-            this.HighScoreText = this.game.add.text(10, 10, "Best Score:         " + this.HighScore.toString(), { font: "30px Arial", fill: "#00ff00", stroke: '#000000', strokeThickness: 3 });
+
+
+            //check cookie for highscore
+            this.HighScore = parseFloat(this.readCookie('hiScore'));
+
+            //sanity check
+            if (this.HighScore === NaN) this.HighScore = 0;
+             
+            this.HighScoreText = this.game.add.text(10, 10, "Best Score:         " + this.HighScore.toFixed(), { font: "30px Arial", fill: "#00ff00", stroke: '#000000', strokeThickness: 3 });
             this.HighScoreText.fixedToCamera = true;
 
             //record player start pos
@@ -70,6 +90,16 @@
 
         update()
         {
+            //if user presses escape go back to the main menu.
+            if (this.game.input.keyboard.isDown(Phaser.Keyboard.ESC))
+            {
+                //save the high score as a cookie
+                document.cookie = "hiScore=" + this.HighScore + "; expires=Thu, 18 Dec 2099 12:00:00 GMT";
+
+                //reload the page
+                location.reload();
+            }
+
             this.BackgroundCloudGenerator.update();
             this.ForgroundCloudGenerator.update();
             this.game.physics.arcade.collide(this.player, this.GroupFloor);
