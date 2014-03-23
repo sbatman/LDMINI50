@@ -40,8 +40,20 @@ var MINILD50;
 (function (MINILD50) {
     var Floor = (function (_super) {
         __extends(Floor, _super);
-        function Floor(game, x, y, type) {
-            _super.call(this, game, x, y, 'graphics-Level-BuildingParts-Roof128-' + type);
+        function Floor(game, x, y, skin, type) {
+            var roofsize = "";
+            switch (type) {
+                case 1:
+                    roofsize = "128";
+                    break;
+                case 2:
+                    roofsize = "256";
+                    break;
+                case 3:
+                    roofsize = "512";
+                    break;
+            }
+            _super.call(this, game, x, y, 'graphics-Level-BuildingParts-Roof' + roofsize + '-' + skin);
 
             game.add.existing(this);
             game.physics.arcade.enable(this);
@@ -70,14 +82,12 @@ var MINILD50;
             if (this.body.touching.down) {
                 if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
                     this.body.velocity.x -= 5;
-                    if (this.scale.x == 1) {
+                    if (this.scale.x == 1)
                         this.scale.x = -1;
-                    }
                 } else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
                     this.body.velocity.x += 5;
-                    if (this.scale.x == -1) {
+                    if (this.scale.x == -1)
                         this.scale.x = 1;
-                    }
                 } else {
                     this.body.velocity.x *= 0.6;
                 }
@@ -106,6 +116,105 @@ var MINILD50;
         return MainGame;
     })(Phaser.Game);
     MINILD50.MainGame = MainGame;
+})(MINILD50 || (MINILD50 = {}));
+var MINILD50;
+(function (MINILD50) {
+    var BootState = (function (_super) {
+        __extends(BootState, _super);
+        function BootState() {
+            _super.apply(this, arguments);
+        }
+        BootState.prototype.preload = function () {
+            //load the loading bar BEFORE the main loading phase.
+            this.load.image('content-graphics-menu-loadingBar', 'Content/Graphics/Menu/loader.jpg');
+        };
+
+        BootState.prototype.create = function () {
+            this.input.maxPointers = 1;
+            this.stage.disableVisibilityChange = true;
+            this.game.world.width = 10000;
+            this.game.camera.bounds.width = 10000;
+            this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+            this.game.state.start('Preloader', true, false);
+        };
+        return BootState;
+    })(Phaser.State);
+    MINILD50.BootState = BootState;
+})(MINILD50 || (MINILD50 = {}));
+var MINILD50;
+(function (MINILD50) {
+    var LevelState = (function (_super) {
+        __extends(LevelState, _super);
+        function LevelState() {
+            _super.apply(this, arguments);
+        }
+        LevelState.prototype.preload = function () {
+            //play theme music.
+            this.ThemeMusic = this.add.audio('content-audio-music-gameTheme', 0.5, true);
+            this.ThemeMusic.play();
+
+            //create the background and draw it as sky blue.
+            this.Background = new Phaser.Sprite(this.game, 0, 0, 'content-graphics-level-background');
+            this.Background.fixedToCamera = true;
+            this.game.add.existing(this.Background);
+
+            this.CloudGenerator = new MINILD50.Clouds(this.game);
+
+            this.player = new MINILD50.Player(this.game, 10, 284);
+            this.game.physics.arcade.gravity.y = 250;
+            this.GroupFloor = this.game.add.group();
+
+            this.Floor = new Array();
+
+            var pos = 0;
+            var lasheight = 360;
+            for (var x = 0; x < 50; x++) {
+                var type = this.rnd.integerInRange(1, 3);
+                var newhieght = this.rnd.integerInRange(lasheight - (x * 2), lasheight + (x * 2));
+                if (newhieght < 350)
+                    newhieght = 350;
+                lasheight = newhieght;
+                var floor = new MINILD50.Floor(this.game, pos, newhieght, this.rnd.integerInRange(1, type == 3 ? 2 : 3), type);
+                this.Floor.push(floor);
+                this.GroupFloor.add(floor);
+                pos += this.rnd.integerInRange(x, 40 + x);
+                switch (type) {
+                    case 1:
+                        pos += 128;
+                        break;
+                    case 2:
+                        pos += 256;
+                        break;
+                    case 3:
+                        pos += 512;
+                        break;
+                }
+            }
+            this.game.camera.follow(this.player);
+            this.game.camera.deadzone = new Phaser.Rectangle(200, 150, 500, 300);
+        };
+
+        LevelState.prototype.create = function () {
+        };
+
+        LevelState.prototype.update = function () {
+            this.CloudGenerator.update();
+            this.game.physics.arcade.collide(this.player, this.GroupFloor);
+            this.player.PhysicsUpdate();
+            if (this.player.position.y > 700) {
+                this.player.body.position.x = 30;
+                this.player.body.position.y = 284;
+                this.player.body.velocity.x = 0;
+                this.player.body.velocity.y = 0;
+            }
+        };
+
+        LevelState.prototype.exit = function () {
+            this.player = null;
+        };
+        return LevelState;
+    })(Phaser.State);
+    MINILD50.LevelState = LevelState;
 })(MINILD50 || (MINILD50 = {}));
 var MINILD50;
 (function (MINILD50) {
@@ -159,65 +268,6 @@ var MINILD50;
 })(MINILD50 || (MINILD50 = {}));
 var MINILD50;
 (function (MINILD50) {
-    var LevelState = (function (_super) {
-        __extends(LevelState, _super);
-        function LevelState() {
-            _super.apply(this, arguments);
-        }
-        LevelState.prototype.preload = function () {
-            //play theme music.
-            this.ThemeMusic = this.add.audio('content-audio-music-gameTheme', 0.5, true);
-            this.ThemeMusic.play();
-
-            //create the background and draw it as sky blue.
-            this.Background = new Phaser.Sprite(this.game, 0, 0, 'content-graphics-level-background');
-            this.Background.fixedToCamera = true;
-            this.game.add.existing(this.Background);
-
-            this.CloudGenerator = new MINILD50.Clouds(this.game);
-
-            this.player = new MINILD50.Player(this.game, 10, 284);
-            this.game.physics.arcade.gravity.y = 250;
-            this.GroupFloor = this.game.add.group();
-
-            this.Floor = new Array();
-
-            var pos = 0;
-            for (var x = 0; x < 50; x++) {
-                var floor = new MINILD50.Floor(this.game, pos, this.rnd.integerInRange(350, 420 + (x * 3)), this.rnd.integerInRange(1, 3));
-                this.Floor.push(floor);
-                this.GroupFloor.add(floor);
-                pos += this.rnd.integerInRange(x * 3, 40 + (x * 3));
-                pos += 128;
-            }
-            this.game.camera.follow(this.player);
-            this.game.camera.deadzone = new Phaser.Rectangle(200, 150, 500, 300);
-        };
-
-        LevelState.prototype.create = function () {
-        };
-
-        LevelState.prototype.update = function () {
-            this.CloudGenerator.update();
-            this.game.physics.arcade.collide(this.player, this.GroupFloor);
-            this.player.PhysicsUpdate();
-            if (this.player.position.y > 700) {
-                this.player.body.position.x = 30;
-                this.player.body.position.y = 284;
-                this.player.body.velocity.x = 0;
-                this.player.body.velocity.y = 0;
-            }
-        };
-
-        LevelState.prototype.exit = function () {
-            this.player = null;
-        };
-        return LevelState;
-    })(Phaser.State);
-    MINILD50.LevelState = LevelState;
-})(MINILD50 || (MINILD50 = {}));
-var MINILD50;
-(function (MINILD50) {
     var PreloaderState = (function (_super) {
         __extends(PreloaderState, _super);
         function PreloaderState() {
@@ -227,8 +277,13 @@ var MINILD50;
             //load all images.
             this.load.image('graphics-character-placeholder', 'Content/Graphics/Character/PlaceHolder.png');
             this.load.image('content-graphics-menu-titleScreen', 'Content/Graphics/Menu/titleScreen.jpg');
+
             for (var i = 1; i <= 3; i++)
                 this.load.image('graphics-Level-BuildingParts-Roof128-' + i, 'Content/Graphics/Level/BuildingParts/Roof128-' + i + '.png');
+            for (var i = 1; i <= 3; i++)
+                this.load.image('graphics-Level-BuildingParts-Roof256-' + i, 'Content/Graphics/Level/BuildingParts/Roof256-' + i + '.png');
+            for (var i = 1; i <= 2; i++)
+                this.load.image('graphics-Level-BuildingParts-Roof512-' + i, 'Content/Graphics/Level/BuildingParts/Roof512-' + i + '.png');
             this.load.image('content-graphics-level-background', 'Content/Graphics/Level/Background.jpg');
             for (var i = 1; i <= 2; i++)
                 this.load.image('content-graphics-level-Clouds-' + i, 'Content/Graphics/Level/Clouds/' + i + '.png');
@@ -259,27 +314,4 @@ var MINILD50;
     })(Phaser.State);
     MINILD50.PreloaderState = PreloaderState;
 })(MINILD50 || (MINILD50 = {}));
-var MINILD50;
-(function (MINILD50) {
-    var BootState = (function (_super) {
-        __extends(BootState, _super);
-        function BootState() {
-            _super.apply(this, arguments);
-        }
-        BootState.prototype.preload = function () {
-            //load the loading bar BEFORE the main loading phase.
-            this.load.image('content-graphics-menu-loadingBar', 'Content/Graphics/Menu/loader.jpg');
-        };
-
-        BootState.prototype.create = function () {
-            this.input.maxPointers = 1;
-            this.stage.disableVisibilityChange = true;
-            this.game.world.width = 10000;
-            this.game.camera.bounds.width = 10000;
-            this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-            this.game.state.start('Preloader', true, false);
-        };
-        return BootState;
-    })(Phaser.State);
-    MINILD50.BootState = BootState;
-})(MINILD50 || (MINILD50 = {}));
+//# sourceMappingURL=MainGame.js.map
