@@ -47,7 +47,7 @@
                 {
                     this.body.velocity.y = -140;
                     this.body.velocity.x = -this.body.velocity.x;
-                    this.body.velocity.x -= 15;
+                    this.body.velocity.x -= 40;
                 }
             } else if (this.body.touching.left)
             {
@@ -55,7 +55,7 @@
                 {
                     this.body.velocity.y = -140;
                     this.body.velocity.x = -this.body.velocity.x;
-                    this.body.velocity.x += 15;
+                    this.body.velocity.x +=40;
                 }
             }
         }

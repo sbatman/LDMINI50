@@ -17,6 +17,8 @@
             for (var i = 1; i <= 3; i++) this.load.image('graphics-Level-BuildingParts-Roof128-' + i, 'Content/Graphics/Level/BuildingParts/Roof128-' + i + '.png');
             for (var i = 1; i <= 3; i++) this.load.image('graphics-Level-BuildingParts-Roof256-' + i, 'Content/Graphics/Level/BuildingParts/Roof256-' + i + '.png');
             for (var i = 1; i <= 2; i++) this.load.image('graphics-Level-BuildingParts-Roof512-' + i, 'Content/Graphics/Level/BuildingParts/Roof512-' + i + '.png');
+            for (var i = 1; i <= 5; i++) this.load.image('graphics-Level-BuildingParts-Top-' + i, 'Content/Graphics/Level/BuildingParts/Top-' + i + '.png');
+
             this.load.image('content-graphics-level-background', 'Content/Graphics/Level/Background.jpg');
             for (var i = 1; i <= 2; i++) this.load.image('content-graphics-level-Clouds-'+i, 'Content/Graphics/Level/Clouds/'+i+'.png');
 
