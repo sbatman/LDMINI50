@@ -29,7 +29,6 @@
 
             this.BackgroundCloudGenerator = new MINILD50.Clouds(this.game,100,-5,2);
 
-
             this.player = new Player(this.game, 10, 284);
             this.game.physics.arcade.gravity.y = 250;
             this.GroupFloor = this.game.add.group();          
