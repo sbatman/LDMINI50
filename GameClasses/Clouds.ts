@@ -4,17 +4,17 @@
     {
         sprites: Array<Phaser.Sprite>;
 
-        constructor(game: Phaser.Game)
+        constructor(game: Phaser.Game, count: number, lowerVariance: number, upperVariance: number)
         {
             this.sprites = new Array<Phaser.Sprite>();
-            for (var i = 0; i < 30; i++)
+            for (var i = 0; i < count; i++)
             {
-                var instance = new Phaser.Sprite(game, -10000, 0, 'content-graphics-level-Clouds-' + ((i % 2)+1));
+                var instance = new Phaser.Sprite(game, -50000, 0, 'content-graphics-level-Clouds-' + ((i % 2)+1));
                 game.add.existing(instance);
                 this.sprites.push(instance);
-                instance.position.x = instance.game.rnd.integerInRange(-300, 10000);
+                instance.position.x = instance.game.rnd.integerInRange(-300, 50000);
                 instance.position.y = instance.game.rnd.integerInRange(-100, 320);
-                instance.scale.x = 1 - (0.1 * instance.game.rnd.integerInRange(-5, 5));
+                instance.scale.x = 1 - (0.1 * instance.game.rnd.integerInRange(-lowerVariance, upperVariance));
                 instance.scale.y = instance.scale.x;
                 instance.alpha = ((instance.scale.x-0.5)*0.5)+0.5;
             }            

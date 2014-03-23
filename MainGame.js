@@ -4,15 +4,15 @@
 var MINILD50;
 (function (MINILD50) {
     var Clouds = (function () {
-        function Clouds(game) {
+        function Clouds(game, count, lowerVariance, upperVariance) {
             this.sprites = new Array();
-            for (var i = 0; i < 30; i++) {
-                var instance = new Phaser.Sprite(game, -10000, 0, 'content-graphics-level-Clouds-' + ((i % 2) + 1));
+            for (var i = 0; i < count; i++) {
+                var instance = new Phaser.Sprite(game, -50000, 0, 'content-graphics-level-Clouds-' + ((i % 2) + 1));
                 game.add.existing(instance);
                 this.sprites.push(instance);
-                instance.position.x = instance.game.rnd.integerInRange(-300, 10000);
+                instance.position.x = instance.game.rnd.integerInRange(-300, 50000);
                 instance.position.y = instance.game.rnd.integerInRange(-100, 320);
-                instance.scale.x = 1 - (0.1 * instance.game.rnd.integerInRange(-5, 5));
+                instance.scale.x = 1 - (0.1 * instance.game.rnd.integerInRange(-lowerVariance, upperVariance));
                 instance.scale.y = instance.scale.x;
                 instance.alpha = ((instance.scale.x - 0.5) * 0.5) + 0.5;
             }
@@ -95,6 +95,21 @@ var MINILD50;
                     this.body.velocity.y = -190;
                 }
             }
+            this.body.checkCollision.left = true;
+            this.body.checkCollision.right = true;
+            if (this.body.touching.right) {
+                if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
+                    this.body.velocity.y = -140;
+                    this.body.velocity.x = -this.body.velocity.x;
+                    this.body.velocity.x -= 15;
+                }
+            } else if (this.body.touching.left) {
+                if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
+                    this.body.velocity.y = -140;
+                    this.body.velocity.x = -this.body.velocity.x;
+                    this.body.velocity.x += 15;
+                }
+            }
         };
         return Player;
     })(Phaser.Sprite);
@@ -132,8 +147,8 @@ var MINILD50;
         BootState.prototype.create = function () {
             this.input.maxPointers = 1;
             this.stage.disableVisibilityChange = true;
-            this.game.world.width = 10000;
-            this.game.camera.bounds.width = 10000;
+            this.game.world.width = 50000;
+            this.game.camera.bounds.width = 50000;
             this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
             this.game.state.start('Preloader', true, false);
         };
@@ -158,7 +173,7 @@ var MINILD50;
             this.Background.fixedToCamera = true;
             this.game.add.existing(this.Background);
 
-            this.CloudGenerator = new MINILD50.Clouds(this.game);
+            this.BackgroundCloudGenerator = new MINILD50.Clouds(this.game, 100, -5, 2);
 
             this.player = new MINILD50.Player(this.game, 10, 284);
             this.game.physics.arcade.gravity.y = 250;
@@ -168,16 +183,20 @@ var MINILD50;
 
             var pos = 0;
             var lasheight = 360;
-            for (var x = 0; x < 50; x++) {
+            for (var x = 0; x < 200; x++) {
                 var type = this.rnd.integerInRange(1, 3);
-                var newhieght = this.rnd.integerInRange(lasheight - (x * 2), lasheight + (x * 2));
+                var newhieght = this.rnd.integerInRange(lasheight - 40, lasheight + 40);
                 if (newhieght < 350)
                     newhieght = 350;
+                if (newhieght > 500)
+                    newhieght = 500;
+                if (newhieght == lasheight)
+                    newhieght -= 4;
                 lasheight = newhieght;
                 var floor = new MINILD50.Floor(this.game, pos, newhieght, this.rnd.integerInRange(1, type == 3 ? 2 : 3), type);
                 this.Floor.push(floor);
                 this.GroupFloor.add(floor);
-                pos += this.rnd.integerInRange(x, 40 + x);
+                pos += this.rnd.integerInRange(x, x * 3);
                 switch (type) {
                     case 1:
                         pos += 128;
@@ -192,13 +211,16 @@ var MINILD50;
             }
             this.game.camera.follow(this.player);
             this.game.camera.deadzone = new Phaser.Rectangle(200, 150, 500, 300);
+
+            this.ForgroundCloudGenerator = new MINILD50.Clouds(this.game, 25, 2, 5);
         };
 
         LevelState.prototype.create = function () {
         };
 
         LevelState.prototype.update = function () {
-            this.CloudGenerator.update();
+            this.BackgroundCloudGenerator.update();
+            this.ForgroundCloudGenerator.update();
             this.game.physics.arcade.collide(this.player, this.GroupFloor);
             this.player.PhysicsUpdate();
             if (this.player.position.y > 700) {

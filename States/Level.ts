@@ -7,7 +7,9 @@
         GroupFloor: Phaser.Group;
         Background: Phaser.Sprite;
         ThemeMusic: Phaser.Sound;
-        CloudGenerator: MINILD50.Clouds;
+        BackgroundCloudGenerator: MINILD50.Clouds;
+        ForgroundCloudGenerator: MINILD50.Clouds;
+        myInt: number;
 
         preload()
         {
@@ -22,7 +24,7 @@
             this.game.add.existing(this.Background);
 
 
-            this.CloudGenerator = new MINILD50.Clouds(this.game);
+            this.BackgroundCloudGenerator = new MINILD50.Clouds(this.game,100,-5,2);
 
 
             this.player = new Player(this.game, 10, 284);
@@ -33,16 +35,18 @@
 
             var pos = 0;
             var lasheight = 360;
-            for (var x = 0; x < 50; x++)
+            for (var x = 0; x < 200; x++)
             {                          
                 var type = this.rnd.integerInRange(1, 3);
-                var newhieght = this.rnd.integerInRange(lasheight - (x*2), lasheight + (x*2));
+                var newhieght = this.rnd.integerInRange(lasheight - 40, lasheight +40);
                 if (newhieght < 350) newhieght = 350;
+                if (newhieght > 500) newhieght = 500;
+                if (newhieght == lasheight) newhieght -= 4;
                 lasheight = newhieght;
                 var floor = new MINILD50.Floor(this.game, pos, newhieght, this.rnd.integerInRange(1, type==3?2:3), type);
                 this.Floor.push(floor);
                 this.GroupFloor.add(floor);
-                pos += this.rnd.integerInRange(x, 40 + x);
+                pos += this.rnd.integerInRange(x, x*3);
                 switch (type)
                 {
                     case 1: pos += 128; break;
@@ -53,6 +57,8 @@
             this.game.camera.follow(this.player);
             this.game.camera.deadzone = new Phaser.Rectangle(200, 150, 500, 300);
 
+            this.ForgroundCloudGenerator = new MINILD50.Clouds(this.game, 25, 2, 5);
+
         }
 
         create()
@@ -62,7 +68,8 @@
 
         update()
         {
-            this.CloudGenerator.update();
+            this.BackgroundCloudGenerator.update();
+            this.ForgroundCloudGenerator.update();
             this.game.physics.arcade.collide(this.player, this.GroupFloor);
             this.player.PhysicsUpdate();
             if (this.player.position.y > 700)
