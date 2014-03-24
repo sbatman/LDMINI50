@@ -53,7 +53,7 @@
             this.Fadeout = new Phaser.Sprite(this.game, 0, 500, 'content-graphics-level-fadeOut');
             this.Fadeout.fixedToCamera = true;
             this.game.add.existing(this.Fadeout);
-
+            this.ForgroundCloudGenerator = new MINILD50.Clouds(this.game, 25, 2, 5);
 
             this.makeWorld();
 
@@ -61,7 +61,7 @@
             this.game.camera.follow(this.player);
             this.game.camera.deadzone = new Phaser.Rectangle(200, 150, 500, 300);
 
-            this.ForgroundCloudGenerator = new MINILD50.Clouds(this.game, 25, 2, 5);
+            
 
 
             //add score
@@ -190,6 +190,7 @@
                 }
             }
             this.Fadeout.bringToTop();
+            this.ForgroundCloudGenerator.bringToTop();
         }
 
         exit()
