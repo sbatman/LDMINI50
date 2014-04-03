@@ -20,6 +20,7 @@
     <Content Include="app.css" />
     <Content Include="Content\Audio\Music\MenuTrack.mp3" />
     <Content Include="Content\Audio\Music\Track.mp3" />
+    <Content Include="Content\GetSource.png" />
     <Content Include="Content\Graphics\Character\faithSpriteSheet.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -46,6 +47,7 @@
     <Content Include="Content\Graphics\Level\fadeOut.png" />
     <Content Include="Content\Graphics\Menu\loadingBar.jpg" />
     <Content Include="Content\Graphics\Menu\titleScreen.jpg" />
+    <Content Include="Content\PoweredBy.png" />
     <Content Include="index.html" />
     <Content Include="Libs\Phaser\phaser.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -1,14 +1,19 @@
-﻿module MINILD50
+﻿// ///////////////////////////
+// /// MINILD50
+// /// 03/04/2014
+// /// By Steven Batchelor-Manning (http://insanedev.co.uk)
+// /// and Edwin Jones (http://edwinjones.me.uk/)
+// ///////////////////////////
+module MINILD50
 {
     export class Clouds
-    {
-        sprites: Array<Phaser.Sprite>;
+        {
+        sprites : Array<Phaser.Sprite>;
 
         constructor(game: Phaser.Game, count: number, lowerVariance: number, upperVariance: number)
         {
             this.sprites = new Array<Phaser.Sprite>();
-            for (var i = 0; i < count; i++)
-            {
+            for (var i = 0; i < count; i++) {
                 var instance = new Phaser.Sprite(game, -20000, 0, 'content-graphics-level-Clouds-' + ((i % 2) + 1));
                 game.add.existing(instance);
                 this.sprites.push(instance);
@@ -22,11 +27,9 @@
 
         update()
         {
-            for (var i = 0; i < this.sprites.length; i++)
-            {
+            for (var i = 0; i < this.sprites.length; i++) {
                 this.sprites[i].position.x -= this.sprites[i].scale.x;
-                if (this.sprites[i].position.x < -600)
-                {
+                if (this.sprites[i].position.x < -600) {
                     this.sprites[i].position.x = 20000 + this.sprites[i].game.rnd.integerInRange(0, 200);
                     this.sprites[i].position.y = this.sprites[i].game.rnd.integerInRange(-50, 320);
                 }
@@ -35,11 +38,10 @@
 
         bringToTop()
         {
-            for (var i = 0; i < this.sprites.length; i++)
-            {
+            for (var i = 0; i < this.sprites.length; i++) {
                 this.sprites[i].bringToTop();
             }
         }
 
-    }
+        }
 }

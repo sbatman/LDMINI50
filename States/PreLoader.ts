@@ -1,15 +1,21 @@
-﻿module MINILD50
+﻿// ///////////////////////////
+// /// MINILD50
+// /// 03/04/2014
+// /// By Steven Batchelor-Manning (http://insanedev.co.uk)
+// /// and Edwin Jones (http://edwinjones.me.uk/)
+// ///////////////////////////
+module MINILD50
 {
     export class PreloaderState extends Phaser.State
-    {
+        {
         //reference to our preloading bar sprite.
-        preloadBar: Phaser.Sprite;
-        loadingMessage: Phaser.Text;
+        preloadBar : Phaser.Sprite;
+        loadingMessage : Phaser.Text;
 
         preload()
         {
             //load all images.
-            
+
             this.load.image('content-graphics-menu-titleScreen', 'Content/Graphics/Menu/titleScreen.jpg');
             this.load.image('content-graphics-level-fadeOut', 'Content/Graphics/Level/fadeOut.png');
 
@@ -23,7 +29,7 @@
             for (var i = 1; i <= 5; i++) this.load.image('graphics-Level-BuildingParts-Top-' + i, 'Content/Graphics/Level/BuildingParts/Top-' + i + '.png');
 
             this.load.image('content-graphics-level-background', 'Content/Graphics/Level/Background.jpg');
-            for (var i = 1; i <= 2; i++) this.load.image('content-graphics-level-Clouds-'+i, 'Content/Graphics/Level/Clouds/'+i+'.png');
+            for (var i = 1; i <= 2; i++) this.load.image('content-graphics-level-Clouds-' + i, 'Content/Graphics/Level/Clouds/' + i + '.png');
 
 
             //load all audio            
@@ -34,7 +40,8 @@
             this.preloadBar = this.add.sprite((window.innerWidth / 2) - 200, (window.innerHeight / 2) - 20, 'content-graphics-menu-loadingBar');
             this.load.setPreloadSprite(this.preloadBar);
 
-            this.loadingMessage = this.game.add.text((window.innerWidth / 2) - 50, (window.innerHeight / 2) - 100, "Loading", { font: "30px Arial", fill: "#00ff00", stroke: '#000000', strokeThickness: 3 });;
+            this.loadingMessage = this.game.add.text((window.innerWidth / 2) - 50, (window.innerHeight / 2) - 100, "Loading", { font: "30px Arial", fill: "#00ff00", stroke: '#000000', strokeThickness: 3 });
+            ;
         }
 
 
@@ -50,5 +57,5 @@
         {
             this.game.state.start('MainMenu', true, false);
         }
-    }
+        }
 }

@@ -1,11 +1,17 @@
-﻿module MINILD50
+﻿// ///////////////////////////
+// /// MINILD50
+// /// 03/04/2014
+// /// By Steven Batchelor-Manning (http://insanedev.co.uk)
+// /// and Edwin Jones (http://edwinjones.me.uk/)
+// ///////////////////////////
+module MINILD50
 {
     export class MenuState extends Phaser.State
-    {
+        {
         //references
-        titleMusic: Phaser.Sound;
-        background: Phaser.Sprite;
-        prompt:     Phaser.Text;
+        titleMusic : Phaser.Sound;
+        background : Phaser.Sprite;
+        prompt :     Phaser.Text;
 
 
         preload()
@@ -37,7 +43,7 @@
 
         //when user provides input, fade the menu screen out and load the first level.
         fadeOut()
-        {      
+        {
             this.add.tween(this.prompt).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
             var tween = this.add.tween(this.background).to({ alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
 
@@ -48,9 +54,9 @@
         startGame()
         {
             this.game.state.start('Level', true, false);
-            
+
             //stop music
-            this.titleMusic.stop(); 
+            this.titleMusic.stop();
         }
-    }
+        }
 }

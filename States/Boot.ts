@@ -1,7 +1,13 @@
-﻿module MINILD50
+﻿// ///////////////////////////
+// /// MINILD50
+// /// 03/04/2014
+// /// By Steven Batchelor-Manning (http://insanedev.co.uk)
+// /// and Edwin Jones (http://edwinjones.me.uk/)
+// ///////////////////////////
+module MINILD50
 {
     export class BootState extends Phaser.State
-    {
+        {
 
         preload()
         {
@@ -20,6 +26,6 @@
 
         }
 
-    }
+        }
 
 }
